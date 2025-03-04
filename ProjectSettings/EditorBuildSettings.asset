@@ -7,4 +7,6 @@ EditorBuildSettings:
   m_Scenes: []
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5b312e4bca9d94f48b98d75f3e6417ab, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: ce20f2cac477c4470add20d2bda95a89, type: 2}
   m_UseUCBPForAssetBundles: 0
