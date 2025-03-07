@@ -1052,6 +1052,11 @@
                     "isOR": false
                 }
             ]
+        },
+        {
+            "name": "New Control Scheme",
+            "bindingGroup": "New Control Scheme",
+            "devices": []
         }
     ]
 }
