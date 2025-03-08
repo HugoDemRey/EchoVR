@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
-public class HandSnapping : MonoBehaviour
+public class GrabHandSnapping : MonoBehaviour
 {
-    public List<Transform> SnappingPoints; // List of predefined hand poses
 
     public Component rightController;
     public Component leftController;
@@ -16,18 +15,32 @@ public class HandSnapping : MonoBehaviour
     private ControllerTracking rightControllerTracking;
     private ControllerTracking leftControllerTracking;
 
-    // public float snapSpeed = 5f; // TODO - Implement smooth transition
+    public float snapSpeed = 12f; // TODO - Implement smooth transition
 
-    private ClimbInteractable climbInteractable;
-    private bool isAligning = false;
+    private XRGrabInteractable grabInteractable;
+    private List<Transform> SnappingPoints; // List of predefined hand poses, every children with tag "SnappingPoint" is added to this list
+
+    private string SNAPPING_POINT_TAG = "SnappingPoint";
 
     void Awake()
     {
-        climbInteractable = GetComponent<ClimbInteractable>();
+        grabInteractable = GetComponent<XRGrabInteractable>();
 
-        if (climbInteractable == null)
+        // Add all snapping points to the list
+        SnappingPoints = new List<Transform>();
+        foreach (Transform child in transform) {
+            if (child.CompareTag(SNAPPING_POINT_TAG)) SnappingPoints.Add(child);
+        }
+
+        foreach (Transform child in transform.parent)
         {
-            Debug.LogError("XRGrabInteractable is missing on " + gameObject.name);
+            if (child.CompareTag(SNAPPING_POINT_TAG)) SnappingPoints.Add(child);
+        }
+
+
+        if (grabInteractable == null)
+        {
+            Debug.LogError("XRClimbInteractable is missing on " + gameObject.name);
             return;
         }
         if (SnappingPoints.Count == 0)
@@ -44,8 +57,8 @@ public class HandSnapping : MonoBehaviour
         rightControllerTracking = new ControllerTracking(rightControllerModel.transform.localPosition, rightControllerModel.transform.localRotation);
         leftControllerTracking = new ControllerTracking(leftControllerModel.transform.localPosition, leftControllerModel.transform.localRotation);
 
-        climbInteractable.selectEntered.AddListener(AlignHandModel);
-        climbInteractable.selectExited.AddListener(ResetHandModel);
+        grabInteractable.selectEntered.AddListener(AlignHandModel);
+        grabInteractable.selectExited.AddListener(ResetHandModel);
     }
 
     void AlignHandModel(SelectEnterEventArgs args)
@@ -67,7 +80,6 @@ public class HandSnapping : MonoBehaviour
             triggeredComponent = leftControllerModel;
             controllerTracking = leftControllerTracking;
         }
-        Debug.Log("Entered Triggered on " + triggeredComponent);
         
         if (triggeredComponent == null) return;
 
@@ -75,8 +87,6 @@ public class HandSnapping : MonoBehaviour
         Transform closestHandPose = GetClosestHandPose(triggeredComponent.transform.position);
         controllerTracking.closestHandPose = closestHandPose;
 
-        // Start smooth transition to ideal pose
-        isAligning = true;
         StartCoroutine(Align(triggeredComponent, controllerTracking));
     }
 
@@ -100,14 +110,24 @@ public class HandSnapping : MonoBehaviour
 
     private System.Collections.IEnumerator Align(Component controller, ControllerTracking controllerTracking)
     {
+        // TODO - Instead of tracking the controller position and get it closer to the wanted position, we should track the grabbed object position and get the controller closer to it
         controllerTracking.isTriggered = true;
         // Keep hand aligned while selected - Not smooth for now
-        while (controllerTracking.isTriggered)
-        {
-            controller.transform.position = controllerTracking.closestHandPose.position;
-            controller.transform.rotation = controllerTracking.closestHandPose.rotation;
-            yield return null;
-        }
+
+        // while (controllerTracking.isTriggered) {
+        //     if (Vector3.Distance(controller.transform.position, controllerTracking.closestHandPose.position) < 0.005f) break;
+
+        //     Vector3 newPosition = Vector3.Lerp(controller.transform.position, controllerTracking.closestHandPose.position, Time.deltaTime * snapSpeed);
+        //     Quaternion newRotation = Quaternion.Lerp(controller.transform.rotation, controllerTracking.closestHandPose.rotation, Time.deltaTime * snapSpeed);
+
+        //     controller.transform.position = newPosition;
+        //     controller.transform.rotation = newRotation;
+        //     yield return null;
+            
+        // }
+        controller.transform.position = controllerTracking.closestHandPose.position;
+        controller.transform.rotation = controllerTracking.closestHandPose.rotation;
+        yield return null;
     }
 
     void ResetHandModel(SelectExitEventArgs args)
@@ -124,8 +144,6 @@ public class HandSnapping : MonoBehaviour
         }
 
         if (triggeredComponent == null) return;
-
-        Debug.Log("Exited Triggered on " + triggeredComponent);
 
         controllerTracking.isTriggered = false;
         triggeredComponent.transform.localPosition = controllerTracking.originalRelativePosition;

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - ControllerModel
+  - SnappingPoint
   layers:
   - Default
   - TransparentFX
