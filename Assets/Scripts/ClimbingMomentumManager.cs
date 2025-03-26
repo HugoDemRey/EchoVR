@@ -15,10 +15,10 @@ public class ClimbingMomentumManager : MonoBehaviour
     public InputActionProperty leftControllerVelocityAction; // Link this to XRI Left/Velocity
     private ClimbProvider climbProvider;
     private LocomotionState previousPhase;
-    private float FORCE_MULTIPLIER = 5f; // Adjust this value to control the momentum
+    private float FORCE_MULTIPLIER = 3f; // Adjust this value to control the momentum
 
-    private float MOMENTUM_DECAY_RATE = 0.95f; // Adjust this value to control how quickly the momentum decays
-    private float MIN_VELOCITY_THRESHOLD = 0.1f; // Threshold to stop the coroutine
+    private float MOMENTUM_DECAY_RATE = 0.98f; // Adjust this value to control how quickly the momentum decays
+    private float MIN_VELOCITY_THRESHOLD = 1f; // Threshold to stop the coroutine
 
     void Start()
     {
