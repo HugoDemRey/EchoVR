@@ -3,7 +3,7 @@ using UnityEngine.XR.Interaction.Toolkit.Locomotion;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
 using Vector3 = UnityEngine.Vector3;
 
-public class ClimbEndGravityHandler : MonoBehaviour
+public class RBMomentumManager : MonoBehaviour
 {
     private ClimbProvider climbProvider;
     private LocomotionState previousPhase;
@@ -33,6 +33,11 @@ public class ClimbEndGravityHandler : MonoBehaviour
             return;
 
         isGrounded = characterController.isGrounded;
+
+        if (Time.frameCount % 120 == 0)
+        {
+            Debug.Log("CharacterController velocity: " + characterController.velocity);
+        }
 
 
         LocomotionState currentPhase = climbProvider.locomotionState;
