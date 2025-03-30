@@ -15,9 +15,14 @@ namespace Prefabs.Harpoon
         public InputActionReference triggerAction;
         public GameObject harpoonTip;
         public float grabRadius;
+        public bool infiniteAmmo = true;
+        
+        public Material lineMaterial;
+        public Material linePreviewMaterial;
+        
         public Sprite validCrosshairSprite;
         public Sprite invalidCrosshairSprite;
-        public bool infiniteAmmo = true;
+        
         public String ropeStartTag;
         public String ropeEndTag;
 
@@ -28,10 +33,11 @@ namespace Prefabs.Harpoon
         private Stage _stage = Stage.None;
         private Vector3 _start;
         private Vector3 _end;
-
+        
         private SpriteRenderer _renderer;
         private GameObject _crosshair;
         private Camera _mainCamera;      // Reference to the main camera
+        private LineRenderer _lineRenderer = null;
 
         private enum Stage
         {
@@ -75,6 +81,20 @@ namespace Prefabs.Harpoon
                 _crosshair.transform.position = hit.point + hit.normal * 0.01f;
                 _crosshair.transform.LookAt(_mainCamera.transform);
                 _crosshair.transform.Rotate(0, 180, 0);
+                
+                if (_stage == Stage.StartPlaced)
+                {
+                    _lineRenderer ??= _crosshair.AddComponent<LineRenderer>();
+                
+                    _lineRenderer.startWidth = 0.01f;
+                    _lineRenderer.endWidth = 0.01f;
+                    _lineRenderer.positionCount = 2;
+                    _lineRenderer.useWorldSpace = true;
+                    _lineRenderer.material = linePreviewMaterial;
+                    
+                    _lineRenderer.SetPosition(0, _start);
+                    _lineRenderer.SetPosition(1, hit.point);
+                }
             }
             
             if (nextTargetType == TargetType.Valid && _targetType != TargetType.Valid)
@@ -162,6 +182,9 @@ namespace Prefabs.Harpoon
 
         private void Shoot()
         {
+            Destroy(_lineRenderer);
+            _lineRenderer = null;
+            
             if (!Physics.Raycast(harpoonTip.transform.position, harpoonTip.transform.forward, out var hit)) return;
             if (!IsValidTarget(hit.collider, _stage)) return;
 
@@ -182,18 +205,39 @@ namespace Prefabs.Harpoon
             }
         }
 
-    private void PlaceRope()
-    {
-        LineRenderer lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
+        private void PlaceRope()
+        {
+            GameObject rope = new GameObject("Rope");
+            
+            LineRenderer lineRenderer = rope.AddComponent<LineRenderer>();
+            lineRenderer.startWidth = 0.01f;
+            lineRenderer.endWidth = 0.01f;
+            lineRenderer.positionCount = 2;
+            lineRenderer.useWorldSpace = true;
+            lineRenderer.material = lineMaterial;
         
-        lineRenderer.startWidth = 0.01f;
-        lineRenderer.endWidth = 0.01f;
-        lineRenderer.positionCount = 2;
-        lineRenderer.useWorldSpace = true;    
-        
-        lineRenderer.SetPosition(0, _start);
-        lineRenderer.SetPosition(1, _end);
-    }
+            lineRenderer.SetPosition(0, _start);
+            lineRenderer.SetPosition(1, _end);
+            
+            var midPoint = (_start + _end) / 2;
+            var direction = (_end - _start).normalized;
+            var ropeLength = Vector3.Distance(_start, _end);
+            
+            var rb = rope.AddComponent<Rigidbody>();
+            rb.isKinematic = false;
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            
+            BoxCollider boxCollider = rope.AddComponent<BoxCollider>();
+            boxCollider.size = new Vector3(ropeLength, 0.02f, 0.02f);
+            boxCollider.center = Vector3.zero;
+            
+            rope.transform.position = midPoint;
+            rope.transform.rotation = Quaternion.FromToRotation(Vector3.right, direction);
+
+            // TODO use hugo&nico script here
+            rope.AddComponent<XRGrabInteractable>();
+        }
 }
 
 }
