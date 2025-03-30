@@ -15,13 +15,17 @@ namespace Prefabs.Harpoon
         public InputActionReference triggerAction;
         public GameObject harpoonTip;
         public float grabRadius;
-        public Sprite crosshairSprite;
+        public Sprite validCrosshairSprite;
+        public Sprite invalidCrosshairSprite;
         public bool infiniteAmmo = true;
+        public String ropeStartTag;
+        public String ropeEndTag;
 
         private XRGrabInteractable _grabInteractable;
         private bool _isHeld;
 
-        private Stage _stage;
+        private TargetType _targetType = TargetType.None;
+        private Stage _stage = Stage.None;
         private Vector3 _start;
         private Vector3 _end;
 
@@ -31,22 +35,25 @@ namespace Prefabs.Harpoon
 
         private enum Stage
         {
-            NonePlaced,
+            None,
             StartPlaced,
-            EndPlaced,
             Done
+        }
+
+        private enum TargetType
+        {
+            None,
+            Invalid, 
+            Valid
         }
 
         private void Start()
         {
-            // Create a GameObject to hold the Sprite
+            // Setup crosshair elements
             _crosshair = new GameObject("CrossSprite");
             _renderer = _crosshair.AddComponent<SpriteRenderer>();
-            _renderer.sprite = crosshairSprite;             // Assign the PNG Sprite
-            _renderer.sortingOrder = 10;                // Keep it in front of most objects
-            _crosshair.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f); // Adjust cross size
-            
-            // Cache the main camera for better performance
+            _renderer.sortingOrder = 10; // Gives priority
+            _crosshair.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
             _mainCamera = Camera.main;
         }
 
@@ -60,20 +67,38 @@ namespace Prefabs.Harpoon
 
         private void Update()
         {
+            TargetType nextTargetType = TargetType.None;
             if (_isHeld && Physics.Raycast(harpoonTip.transform.position, harpoonTip.transform.forward, out var hit))
             {
-                // Move the cross to the hit point and align it with the surface normal
-                _crosshair.transform.position = hit.point + hit.normal * 0.01f; // Prevent z-fighting
+                nextTargetType = IsValidTarget(hit.collider, _stage) ? TargetType.Valid : TargetType.Invalid;
                 
-                // Make the sprite face the camera (billboarding)
+                _crosshair.transform.position = hit.point + hit.normal * 0.01f;
                 _crosshair.transform.LookAt(_mainCamera.transform);
-                _crosshair.transform.Rotate(0, 180, 0); // Flip to face correctly since LookAt might make it face backward
-
-                _renderer.color = IsValidTarget(hit.collider) ? Color.green : Color.red;
-                
-                _crosshair.SetActive(true);
+                _crosshair.transform.Rotate(0, 180, 0);
             }
-            else _crosshair.SetActive(false);
+            
+            if (nextTargetType == TargetType.Valid && _targetType != TargetType.Valid)
+            {
+                // todo play sound
+            }
+            
+            _targetType = nextTargetType;
+            
+            switch (_targetType)
+            {
+                case TargetType.Valid:
+                    _renderer.sprite = validCrosshairSprite;
+                    break; 
+                case TargetType.Invalid:
+                    _renderer.sprite = invalidCrosshairSprite;
+                    break;
+                case TargetType.None:
+                default:
+                    _crosshair.SetActive(false);
+                    return;
+            }
+            
+            _crosshair.SetActive(true);
         }
 
         private bool IsTooFar(Transform otherTransform)
@@ -81,9 +106,18 @@ namespace Prefabs.Harpoon
             return Vector3.Distance(transform.position, otherTransform.position) > grabRadius;
         }
 
-        private bool IsValidTarget(Collider c)
+        private bool IsValidTarget(Collider c, Stage stage)
         {
-            return c.CompareTag("Harpoonable");
+            switch (stage)
+            {
+                case Stage.None:
+                    return c.CompareTag(ropeStartTag);
+                case Stage.StartPlaced:
+                    return c.CompareTag(ropeEndTag);
+                case Stage.Done:
+                default:
+                    return false;
+            }
         }
 
         public override bool IsSelectableBy(IXRSelectInteractor interactor)
@@ -129,21 +163,18 @@ namespace Prefabs.Harpoon
         private void Shoot()
         {
             if (!Physics.Raycast(harpoonTip.transform.position, harpoonTip.transform.forward, out var hit)) return;
-            if (!IsValidTarget(hit.collider)) return;
+            if (!IsValidTarget(hit.collider, _stage)) return;
 
             switch (_stage)
             {
-                case Stage.NonePlaced:
+                case Stage.None:
                     _start = hit.point;
                     _stage = Stage.StartPlaced;
                     break;
                 case Stage.StartPlaced:
                     _end = hit.point;
-                    _stage = Stage.EndPlaced;
-                    break;
-                case Stage.EndPlaced:
+                    _stage = infiniteAmmo ? Stage.None : Stage.Done;
                     PlaceRope();
-                    _stage = infiniteAmmo ? Stage.NonePlaced : Stage.Done;
                     break;
                 case Stage.Done:
                 default:
@@ -153,8 +184,6 @@ namespace Prefabs.Harpoon
 
     private void PlaceRope()
     {
-        if (_stage is not Stage.EndPlaced) throw new Exception("Rope placement attempted in wrong stage.");
-        
         LineRenderer lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
         
         lineRenderer.startWidth = 0.01f;
