@@ -1,3 +1,4 @@
+using Prefabs.Rope;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -10,12 +11,20 @@ namespace Prefabs.ZipLineHarpoonHandle
     {
         public Transform leftHandTransform;
         public Transform rightHandTransform;
+        public RopeBehavior ropeBehavior;
 
         private IXRSelectInteractor _leftHandInteractor;
         private IXRSelectInteractor _rightHandInteractor;
         
         private Transform _playerOrigin;
-    
+
+        public void ForceUpdate(RopeBehavior newRopeBehavior, Transform newPosition)
+        {
+            ropeBehavior = newRopeBehavior;
+            transform.position = newPosition.position;
+            transform.rotation = newPosition.rotation;
+        }
+        
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
@@ -67,6 +76,7 @@ namespace Prefabs.ZipLineHarpoonHandle
         {
             _playerOrigin ??= _leftHandInteractor.transform.root;
             _playerOrigin.SetParent(transform, true);
+            ropeBehavior.StartZipLine(this);
         }
 
         private void DetachPlayer()

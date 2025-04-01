@@ -663,9 +663,9 @@ MonoBehaviour:
   m_FarAttachMode: 1
   triggerAction: {fileID: -2439264783773714294, guid: 0be0028c24f2a4c14a96b6aa39055933, type: 3}
   harpoonTip: {fileID: 5065134691184190694}
+  ropePrefab: {fileID: 891548498467375308, guid: a86aa57d0ee1a47b38659ba0b13f5668, type: 3}
   grabRadius: 0.5
   infiniteAmmo: 1
-  lineMaterial: {fileID: 2100000, guid: 2dbac7c86821e4fad85d2425725de487, type: 2}
   triggerMaterial: {fileID: 2100000, guid: 2d67b423122724a5ebcfd4a8e04c0f28, type: 2}
   validCrosshairSprite: {fileID: 21300000, guid: 6e7ec49fd212c4166a97db1fefa5a976, type: 3}
   invalidCrosshairSprite: {fileID: 21300000, guid: 6ca9ec86278c94846aa2611feb6f2899, type: 3}

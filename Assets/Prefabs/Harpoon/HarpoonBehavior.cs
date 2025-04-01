@@ -1,11 +1,8 @@
 using System;
 using Prefabs.Rope;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Filtering;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -15,10 +12,10 @@ namespace Prefabs.Harpoon
     {
         public InputActionReference triggerAction;
         public GameObject harpoonTip;
+        public GameObject ropePrefab;
         public float grabRadius;
         public bool infiniteAmmo = true;
         
-        public Material lineMaterial;
         public Material triggerMaterial;
         
         public Sprite validCrosshairSprite;
@@ -37,7 +34,7 @@ namespace Prefabs.Harpoon
         
         private SpriteRenderer _renderer;
         private GameObject _crosshair;
-        private Camera _mainCamera;      // Reference to the main camera
+        private Camera _mainCamera;
         private LineRenderer _lineRenderer;
 
         private enum Stage
@@ -56,7 +53,6 @@ namespace Prefabs.Harpoon
 
         private void Start()
         {
-            // Setup crosshair elements
             _crosshair = new GameObject("CrossSprite");
             _renderer = _crosshair.AddComponent<SpriteRenderer>();
             _renderer.sortingOrder = 10; // Gives priority
@@ -208,7 +204,8 @@ namespace Prefabs.Harpoon
 
         private void PlaceRope()
         {
-            RopeBehavior.Create(_start, _end, lineMaterial, triggerMaterial);
+            var rope = Instantiate(ropePrefab);
+            rope.GetComponent<RopeBehavior>().ForceUpdate(_start, _end);
         }
 }
 

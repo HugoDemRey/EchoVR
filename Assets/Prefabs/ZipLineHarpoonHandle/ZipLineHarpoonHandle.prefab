@@ -533,5 +533,6 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 0
-  leftHandTarget: {fileID: 2278834913731345384}
-  rightHandTarget: {fileID: 1414787245421487008}
+  leftHandTransform: {fileID: 2278834913731345384}
+  rightHandTransform: {fileID: 1414787245421487008}
+  ropeBehavior: {fileID: 0}
