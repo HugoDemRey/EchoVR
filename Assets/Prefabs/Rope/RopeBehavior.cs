@@ -1,27 +1,136 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Prefabs.Rope
 {
     [ExecuteInEditMode]
     public class RopeBehavior : MonoBehaviour
     {
-        public int numberOfBones;
-        public float boneLength = .3f;
-        public float boneWidth = .1f;
-        public float boneMass = 1;
-        public Transform start;
+        public float width = .015f;
+        public float snapSpherePosition = 0.05f;
+        public Vector3 start;
+        public Vector3 end;
+        public Material ropeMaterial;
+        public Material snapTriggerMaterial;
 
         private bool _validated;
+        
+        private LineRenderer _lineRenderer;
+        private Rigidbody _rigidbody;
+        private CapsuleCollider _collider;
+        private XRGrabInteractable _grabInteractable;
+        
+        private GameObject _zipLineStart;
+        private GameObject _zipLineEnd;
 
-        public void Update()
+        public static RopeBehavior Create(Vector3 newStart, Vector3 newEnd, Material material, Material triggerMaterial)
         {
-            if (!_validated)
+            GameObject go = new GameObject("Harpoon Rope");
+            RopeBehavior rb = go.AddComponent<RopeBehavior>();
+            rb.Setup(newStart, newEnd, material, triggerMaterial);
+            return rb;
+        }
+        private void Setup(Vector3 newStart, Vector3 newEnd, Material newMaterial, Material newTriggerMaterial)
+        {
+            start = newStart;
+            end = newEnd;
+            ropeMaterial = newMaterial;
+            snapTriggerMaterial = newTriggerMaterial;
+            _validated = false;
+        }
+
+        private void UpdateLineRenderer()
+        {
+            if (_lineRenderer is null)
             {
-                UpdateRope();
-                _validated = true;
+                _lineRenderer = gameObject.AddComponent<LineRenderer>();
+                _lineRenderer.positionCount = 2;
+                _lineRenderer.useWorldSpace = true;
             }
+            _lineRenderer.startWidth = width;
+            _lineRenderer.endWidth = width;
+            _lineRenderer.material = ropeMaterial;
+            _lineRenderer.SetPosition(0, start);
+            _lineRenderer.SetPosition(1, end);   
+        }
+
+        private void UpdateRigidBody()
+        {
+            if (_rigidbody is null)
+            {
+                _rigidbody = gameObject.AddComponent<Rigidbody>();
+                _rigidbody.isKinematic = false;
+                _rigidbody.useGravity = true;
+                _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            }
+        }
+
+        private void UpdateCollider()
+        {
+            if (_collider is null)
+            {
+                _collider = gameObject.AddComponent<CapsuleCollider>();
+                _collider.center = Vector3.zero;
+            }
+            _collider.radius = width;
+            _collider.height = Vector3.Distance(start, end);
+        }
+
+        private void UpdateTransform()
+        {
+            transform.position = (start + end) / 2;
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, (end - start).normalized);
+        }
+
+        private void UpdateInteractions()
+        {
+            // Climbing
+            if (_grabInteractable is null)
+            {
+                // TODO use hugo&nico script here
+                gameObject.AddComponent<XRGrabInteractable>();
+            }
+            
+            // Zip line
+            if (!Mathf.Approximately(start.y, end.y))
+            {
+                if (_zipLineStart is null)
+                {
+                    CreateZipLine();
+                }
+                _zipLineStart!.transform.localScale = Vector3.one * (width * 3);
+                _zipLineEnd!.transform.localScale = Vector3.one * (width * 3);
+                Vector3 startTrigger = (1f - snapSpherePosition) * start + snapSpherePosition * end;
+                Vector3 endTrigger = (1f - snapSpherePosition) * end + snapSpherePosition * start;
+                _zipLineStart.transform.position = start.y > end.y
+                    ? startTrigger
+                    : endTrigger;
+                _zipLineEnd.transform.position = start.y > end.y
+                    ? endTrigger
+                    : startTrigger;
+            }
+        }
+
+        private void UpdateAll()
+        {
+            UpdateLineRenderer();
+            UpdateRigidBody();
+            UpdateCollider();
+            UpdateTransform();
+            UpdateInteractions();
+        }
+        
+
+        private void Update()
+        {
+            if (_validated) return;
+            
+            UpdateAll();
+            
+            _validated = true;
         }
 
         private void OnValidate()
@@ -29,81 +138,18 @@ namespace Prefabs.Rope
             _validated = false;
         }
 
-        void UpdateRope()
+        private void CreateZipLine()
         {
-            transform.localScale = Vector3.one;
-            transform.SetPositionAndRotation(start.position, start.rotation);
-            ClearBones();
-            CreateBones();
-        }
-
-        void CreateBones()
-        {
-            GameObject lastBone = null;
-            for (int i = 0; i < numberOfBones; i++)
-            {
-                GameObject newBone = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                
-                if (Application.isPlaying)
-                {
-                    Destroy(newBone.GetComponent<Collider>());
-                }
-                else
-                {
-                    UnityEditor.EditorApplication.delayCall += () => DestroyImmediate(newBone.GetComponent<Collider>());;
-                }
-                
-                newBone.transform.parent = lastBone is null ? transform : lastBone.transform;
-                newBone.transform.localScale = lastBone is null ? new Vector3(boneWidth*2, boneLength/2, boneWidth*2) : Vector3.one;
-                newBone.name = "Bone " + i;
-                
-
-                Vector3 origin = lastBone is null ? start.position : lastBone.transform.position;
-                newBone.transform.SetPositionAndRotation(
-                    origin - new Vector3(0, boneLength, 0),
-                    newBone.transform.rotation
-                );
-
-                if (lastBone is not null)
-                {
-                    HingeJoint joint = newBone.AddComponent<HingeJoint>();
-                    joint.connectedBody = lastBone.GetComponent<Rigidbody>();
-                    
-                    joint.anchor = new Vector3(0, boneLength / 2f, 0); 
-                    joint.axis = new Vector3(1, 0, 0);
-                }
-                else
-                {
-                    Rigidbody _rigidbody = newBone.AddComponent<Rigidbody>();
-                    _rigidbody.mass = boneMass;
-                    _rigidbody.constraints = RigidbodyConstraints.FreezePosition;
-                    
-                }
-                
-                lastBone = newBone;
-            }
-        }
-
-        void ClearBones()
-        {
-            List<Transform> children = new List<Transform>();
-    
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                children.Add(transform.GetChild(i));
-            }
-
-            foreach (Transform child in children)
-            {
-                if (Application.isPlaying)
-                {
-                    Destroy(child.gameObject);
-                }
-                else
-                {
-                    UnityEditor.EditorApplication.delayCall += () => DestroyImmediate(child.gameObject);
-                }
-            }
+            _zipLineStart = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            _zipLineStart.transform.parent = transform;
+            _zipLineStart.name = "Zip Line Start";
+            _zipLineStart.GetComponent<Renderer>().material = snapTriggerMaterial;
+            _zipLineStart.GetComponent<Collider>().isTrigger = true;
+            
+            _zipLineEnd = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            _zipLineEnd.transform.parent = transform;
+            _zipLineEnd.name = "Zip Line End";
+            _zipLineEnd.GetComponent<Renderer>().enabled = true; // TODO set to false before building
         }
     }
 }

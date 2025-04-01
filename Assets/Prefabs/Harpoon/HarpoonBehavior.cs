@@ -1,4 +1,5 @@
 using System;
+using Prefabs.Rope;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,7 +19,7 @@ namespace Prefabs.Harpoon
         public bool infiniteAmmo = true;
         
         public Material lineMaterial;
-        public Material linePreviewMaterial;
+        public Material triggerMaterial;
         
         public Sprite validCrosshairSprite;
         public Sprite invalidCrosshairSprite;
@@ -37,7 +38,7 @@ namespace Prefabs.Harpoon
         private SpriteRenderer _renderer;
         private GameObject _crosshair;
         private Camera _mainCamera;      // Reference to the main camera
-        private LineRenderer _lineRenderer = null;
+        private LineRenderer _lineRenderer;
 
         private enum Stage
         {
@@ -90,7 +91,7 @@ namespace Prefabs.Harpoon
                     _lineRenderer.endWidth = 0.01f;
                     _lineRenderer.positionCount = 2;
                     _lineRenderer.useWorldSpace = true;
-                    _lineRenderer.material = linePreviewMaterial;
+                    _lineRenderer.material = triggerMaterial;
                     
                     _lineRenderer.SetPosition(0, _start);
                     _lineRenderer.SetPosition(1, hit.point);
@@ -207,36 +208,7 @@ namespace Prefabs.Harpoon
 
         private void PlaceRope()
         {
-            GameObject rope = new GameObject("Rope");
-            
-            LineRenderer lineRenderer = rope.AddComponent<LineRenderer>();
-            lineRenderer.startWidth = 0.01f;
-            lineRenderer.endWidth = 0.01f;
-            lineRenderer.positionCount = 2;
-            lineRenderer.useWorldSpace = true;
-            lineRenderer.material = lineMaterial;
-        
-            lineRenderer.SetPosition(0, _start);
-            lineRenderer.SetPosition(1, _end);
-            
-            var midPoint = (_start + _end) / 2;
-            var direction = (_end - _start).normalized;
-            var ropeLength = Vector3.Distance(_start, _end);
-            
-            var rb = rope.AddComponent<Rigidbody>();
-            rb.isKinematic = false;
-            rb.useGravity = true;
-            rb.constraints = RigidbodyConstraints.FreezeAll;
-            
-            BoxCollider boxCollider = rope.AddComponent<BoxCollider>();
-            boxCollider.size = new Vector3(ropeLength, 0.02f, 0.02f);
-            boxCollider.center = Vector3.zero;
-            
-            rope.transform.position = midPoint;
-            rope.transform.rotation = Quaternion.FromToRotation(Vector3.right, direction);
-
-            // TODO use hugo&nico script here
-            rope.AddComponent<XRGrabInteractable>();
+            RopeBehavior.Create(_start, _end, lineMaterial, triggerMaterial);
         }
 }
 
