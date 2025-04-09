@@ -8,6 +8,9 @@ TagManager:
   - SnappingPoint
   - HarpoonStart
   - HarpoonEnd
+  - LeftController
+  - RightController
+  - Origin
   layers:
   - Default
   - TransparentFX
