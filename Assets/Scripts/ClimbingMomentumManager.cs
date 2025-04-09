@@ -69,7 +69,7 @@ public class ClimbingMomentumManager : MonoBehaviour
         Vector3 greatestVelocity = rightVelocity.magnitude > leftVelocity.magnitude ? rightVelocity : leftVelocity;
 
         Vector3 momentumVelocity = -greatestVelocity * FORCE_MULTIPLIER; // Adjust this value to control the momentum
-        Debug.Log("Climb finished! Object velocity: " + rightVelocity);
+        Debug.Log("Climb finished! Object velocity: " + momentumVelocity);
         
         StartCoroutine(ApplyMomentum(momentumVelocity));
 
