@@ -1,4 +1,6 @@
+using Prefabs.ZipLineHandle;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Prefabs.Rope
 {
@@ -9,19 +11,20 @@ namespace Prefabs.Rope
         public Vector3 start;
         public Vector3 end;
 
+        public Material material;
+
+        public GameObject cylinder  = null;
         public GameObject zipLineStart;
         public GameObject zipLineEnd;
         
         private bool _validated;
 
-        private LineRenderer _lineRenderer;
         private CapsuleCollider _collider;
 
         private GameObject _handle;
         
         private void Start()
         {
-            _lineRenderer = GetComponent<LineRenderer>();
             _collider = GetComponent<CapsuleCollider>();
         }
 
@@ -32,12 +35,11 @@ namespace Prefabs.Rope
             _validated = false;
         }
 
-        private void UpdateLineRenderer()
+        private void UpdateLineVisuals()
         {
-            _lineRenderer.startWidth = width;
-            _lineRenderer.endWidth = width;
-            _lineRenderer.SetPosition(0, start);
-            _lineRenderer.SetPosition(1, end);   
+            cylinder.transform.localScale = new Vector3(width, Vector3.Distance(start, end) / 2f, width);
+            cylinder.transform.position = Vector3.Lerp(start, end, .5f);
+            cylinder.transform.rotation = Quaternion.FromToRotation(Vector3.up, (end - start).normalized);
         }
 
         private void UpdateCollider()
@@ -80,7 +82,7 @@ namespace Prefabs.Rope
 
         private void UpdateAll()
         {
-            UpdateLineRenderer();
+            UpdateLineVisuals();
             UpdateCollider();
             UpdateTransform();
             UpdateInteractions();
@@ -101,14 +103,14 @@ namespace Prefabs.Rope
             _validated = false;
         }
 
-        public void SetHandle(GameObject handle)
+        public Vector3 GetStartPoint()
         {
-            _handle = handle;
+            return zipLineStart.transform.position;
         }
 
-        public void StartZipLine(ZipLineHarpoonHandle.ZiplineHandle handle)
+        public Vector3 GetEndPoint()
         {
-            //TODO
+            return zipLineEnd.transform.position;
         }
     }
 }

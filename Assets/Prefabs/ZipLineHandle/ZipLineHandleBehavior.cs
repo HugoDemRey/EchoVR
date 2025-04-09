@@ -1,11 +1,11 @@
+using System;
 using Prefabs.Rope;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-namespace Prefabs.ZipLineHarpoonHandle
+namespace Prefabs.ZipLineHandle
 {
     public class ZiplineHandle : XRGrabInteractable
     {
@@ -18,13 +18,60 @@ namespace Prefabs.ZipLineHarpoonHandle
         
         private Transform _playerOrigin;
 
-        public void ForceUpdate(RopeBehavior newRopeBehavior, Transform newPosition)
+        private bool _triggerAnimation;
+        private bool _running;
+        private float _animationStartTime;
+        private float _animationDuration;
+
+        private void Start()
         {
-            ropeBehavior = newRopeBehavior;
-            transform.position = newPosition.position;
-            transform.rotation = newPosition.rotation;
+            _triggerAnimation = true;
+            // TODO
+        }
+
+        private void Update() {
+            if (_running)
+            {
+                var currentTime = Time.time;
+                var currentDuration = Mathf.Clamp01((currentTime - _animationStartTime) / _animationDuration);
+
+                transform.position = Vector3.Lerp(
+                    ropeBehavior.GetStartPoint(),
+                    ropeBehavior.GetEndPoint(),
+                    GetPosition(currentDuration)
+                );
+
+                if (currentTime - _animationStartTime >= _animationDuration)
+                {
+                    _running = false;
+                    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                    Destroy(this);
+                    return;
+                }
+            }
+
+            if (_triggerAnimation && !_running)
+            {
+                _running = true;
+                _triggerAnimation = false;
+                _animationStartTime = Time.time;
+                _animationDuration = Vector3.Distance(ropeBehavior.GetStartPoint(), ropeBehavior.GetEndPoint());
+            }
+        }
+
+        private float GetPosition(float distance)
+        {
+            return Mathf.Pow(distance, 2);
         }
         
+        public void ForceUpdate(RopeBehavior newRopeBehavior, Transform newPivotTransform)
+        {
+            ropeBehavior = newRopeBehavior;
+            
+            transform.position = newPivotTransform.position;
+            transform.rotation = newPivotTransform.rotation;
+        }
+
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
@@ -76,7 +123,7 @@ namespace Prefabs.ZipLineHarpoonHandle
         {
             _playerOrigin ??= _leftHandInteractor.transform.root;
             _playerOrigin.SetParent(transform, true);
-            ropeBehavior.StartZipLine(this);
+            _triggerAnimation = true;
         }
 
         private void DetachPlayer()
