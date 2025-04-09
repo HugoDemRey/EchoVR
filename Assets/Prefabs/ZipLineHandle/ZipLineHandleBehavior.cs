@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
 
 namespace Prefabs.ZipLineHandle
 {
-    public class ZiplineHandle : XRGrabInteractable
+    public class ZiplineHandle : ClimbInteractable
     {
         public Transform leftHandTransform;
         public Transform rightHandTransform;
@@ -25,7 +26,7 @@ namespace Prefabs.ZipLineHandle
 
         private void Start()
         {
-            _triggerAnimation = true;
+            // _triggerAnimation = true;
             // TODO
         }
 

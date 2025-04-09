@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ControllerModel
   - SnappingPoint
+  - HarpoonStart
+  - HarpoonEnd
   layers:
   - Default
   - TransparentFX

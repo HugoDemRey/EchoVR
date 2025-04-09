@@ -149,6 +149,7 @@ namespace Prefabs.Harpoon
 
         protected override void OnEnable()
         {
+            Debug.Log("OnEnable: " + gameObject.name);
             base.OnEnable();
             triggerAction.action.Enable();
             triggerAction.action.performed += OnTriggerPressed;
@@ -156,6 +157,7 @@ namespace Prefabs.Harpoon
 
         protected override void OnDisable()
         {
+            Debug.Log("OnDisable: " + gameObject.name);
             base.OnDisable();
             triggerAction.action.Disable();
             triggerAction.action.performed -= OnTriggerPressed;
@@ -173,6 +175,7 @@ namespace Prefabs.Harpoon
 
         private void OnTriggerPressed(InputAction.CallbackContext context)
         {
+            Debug.Log("Trigger pressed: " + context.action.name);
             if (!_isHeld) return;
             Shoot();
         }
