@@ -1,5 +1,6 @@
 using System;
 using Prefabs.Rope;
+using UnityEditor.XR.Interaction.Toolkit.Attachment;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -10,6 +11,7 @@ namespace Prefabs.ZipLineHandle
 {
     public class ZiplineHandle : ClimbInteractable
     {
+        
         public Transform leftHandTransform;
         public Transform rightHandTransform;
         public RopeBehavior ropeBehavior;
@@ -17,10 +19,11 @@ namespace Prefabs.ZipLineHandle
         private IXRSelectInteractor _leftHandInteractor;
         private IXRSelectInteractor _rightHandInteractor;
         
-        private Transform _playerOrigin;
+        private CharacterController _characterController;
 
         private bool _triggerAnimation;
         private bool _running;
+        private bool _attached;
         private float _animationStartTime;
         private float _animationDuration;
 
@@ -36,11 +39,19 @@ namespace Prefabs.ZipLineHandle
                 var currentTime = Time.time;
                 var currentDuration = Mathf.Clamp01((currentTime - _animationStartTime) / _animationDuration);
 
-                transform.position = Vector3.Lerp(
+                Vector3 newPosition = Vector3.Lerp(
                     ropeBehavior.GetStartPoint(),
                     ropeBehavior.GetEndPoint(),
-                    GetPosition(currentDuration)
+                    UpdatePosition(currentDuration)
                 );
+
+                if (_attached)
+                {
+                    Vector3 relativePosition = newPosition - transform.position;
+                    _characterController.Move(relativePosition);
+                }
+
+                transform.position = newPosition;
 
                 if (currentTime - _animationStartTime >= _animationDuration)
                 {
@@ -56,13 +67,13 @@ namespace Prefabs.ZipLineHandle
                 _running = true;
                 _triggerAnimation = false;
                 _animationStartTime = Time.time;
-                _animationDuration = Vector3.Distance(ropeBehavior.GetStartPoint(), ropeBehavior.GetEndPoint());
+                _animationDuration = Vector3.Distance(ropeBehavior.GetStartPoint(), ropeBehavior.GetEndPoint()) / 5f;
             }
         }
 
-        private float GetPosition(float distance)
+        private float UpdatePosition(float time)
         {
-            return Mathf.Pow(distance, 2);
+            return (Mathf.Pow(time + 1, 2f) - 1) / 3f;
         }
         
         public void ForceUpdate(RopeBehavior newRopeBehavior, Transform newPivotTransform)
@@ -80,12 +91,10 @@ namespace Prefabs.ZipLineHandle
             if (_leftHandInteractor is null && args.interactorObject.handedness == InteractorHandedness.Left)
             {
                 _leftHandInteractor = args.interactorObject;
-                SetHandPosition(args.interactorObject, leftHandTransform);
             }
             else if (_rightHandInteractor is null && args.interactorObject.handedness == InteractorHandedness.Right)
             {
                 _rightHandInteractor = args.interactorObject;
-                SetHandPosition(args.interactorObject, rightHandTransform);
             }
             
             if (_leftHandInteractor is not null && _rightHandInteractor != null)
@@ -114,22 +123,18 @@ namespace Prefabs.ZipLineHandle
             }
         }
 
-        private void SetHandPosition(IXRSelectInteractor interactor, Transform handTarget)
-        {
-            interactor.transform.position = handTarget.position;
-            interactor.transform.rotation = handTarget.rotation;
-        }
-
         private void AttachPlayer()
         {
-            _playerOrigin ??= _leftHandInteractor.transform.root;
-            _playerOrigin.SetParent(transform, true);
+            _attached = true;
             _triggerAnimation = true;
+            _characterController = GameObject.FindGameObjectWithTag("Origin").GetComponent<CharacterController>();
+            climbProvider.enabled = false;
         }
 
         private void DetachPlayer()
         {
-            _playerOrigin?.SetParent(null, true);
+            _attached = false;
+            climbProvider.enabled = true;
         }
     }
 }

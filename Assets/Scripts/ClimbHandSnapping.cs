@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
 public class ClimbHandSnapping : MonoBehaviour
 {
 
-    public Component rightController;
-    public Component leftController;
-    public Component rightControllerModel;
-    public Component leftControllerModel;
+    private Transform rightController;
+    private Transform leftController;
+    private Component rightControllerModel;
+    private Component leftControllerModel;
 
     private ControllerTracking rightControllerTracking;
     private ControllerTracking leftControllerTracking;
@@ -25,18 +27,23 @@ public class ClimbHandSnapping : MonoBehaviour
 
     void Awake()
     {
+        InitializeInputDevices();
+
         climbInteractable = GetComponent<ClimbInteractable>();
 
         // Add all snapping points to the list
         SnappingPoints = new List<Transform>();
         foreach (Transform child in transform) {
-            if (child.CompareTag(SNAPPING_POINT_TAG)) SnappingPoints.Add(child);
+            if (child.CompareTag(SNAPPING_POINT_TAG)){
+                SnappingPoints.Add(child);
+                Debug.Log("Snapping Point: " + child.name);
+            }
         }
 
-        foreach (Transform child in transform.parent)
-        {
-            if (child.CompareTag(SNAPPING_POINT_TAG)) SnappingPoints.Add(child);
-        }
+        // foreach (Transform child in transform.parent)
+        // {
+        //     if (child.CompareTag(SNAPPING_POINT_TAG)) SnappingPoints.Add(child);
+        // }
 
 
         if (climbInteractable == null)
@@ -153,4 +160,21 @@ public class ClimbHandSnapping : MonoBehaviour
         triggeredComponent.transform.localPosition = controllerTracking.originalRelativePosition;
         triggeredComponent.transform.localRotation = controllerTracking.originalRelativeRotation;
     }
+
+    private void InitializeInputDevices()
+    {
+        rightController = GameObject.FindGameObjectWithTag("RightController").transform;
+        leftController = GameObject.FindGameObjectWithTag("LeftController").transform;
+
+        Debug.Log("Right Controller: " + rightController);
+        Debug.Log("Left Controller: " + leftController);
+
+        rightControllerModel = rightController.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.CompareTag(CONTROLLER_MODEL_TAG));
+        leftControllerModel = leftController.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.CompareTag(CONTROLLER_MODEL_TAG));
+
+        Debug.Log("Right Controller Model: " + rightControllerModel);
+        Debug.Log("Left Controller Model: " + leftControllerModel);
+
+    }
+
 }
