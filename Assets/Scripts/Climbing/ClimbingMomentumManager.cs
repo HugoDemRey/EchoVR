@@ -7,12 +7,15 @@ using UnityEngine.XR.Interaction.Toolkit.Locomotion;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using Vector3 = UnityEngine.Vector3;
+using Quaternion = UnityEngine.Quaternion;
 
 public class ClimbingMomentumManager : MonoBehaviour
 {
     public CharacterController characterController; // To manipulate the position of the player
     public InputActionProperty rightControllerVelocityAction; // Link this to XRI Right/Velocity
     public InputActionProperty leftControllerVelocityAction; // Link this to XRI Left/Velocity
+    public Transform mainCamera; // Reference to the camera offset transform
+    public InputActionProperty headRotationAction; // Link this to XRI Head/Rotation
     private ClimbProvider climbProvider;
     private LocomotionState previousPhase;
     private float FORCE_MULTIPLIER = 3f; // Adjust this value to control the momentum
@@ -68,8 +71,15 @@ public class ClimbingMomentumManager : MonoBehaviour
 
         Vector3 greatestVelocity = rightVelocity.magnitude > leftVelocity.magnitude ? rightVelocity : leftVelocity;
 
+
+        // Quaternion offsetRotation = Quaternion.Inverse(headRotationAction.action.ReadValue<Quaternion>()) * mainCamera.rotation;
+        // greatestVelocity = offsetRotation * greatestVelocity; // Rotate the velocity vector to match the camera's rotation
+
+
+        // Correcting the velocity to the camera's offset in the virtual world
+        //greatestVelocity = mainCamera.TransformDirection(greatestVelocity); 
+
         Vector3 momentumVelocity = -greatestVelocity * FORCE_MULTIPLIER; // Adjust this value to control the momentum
-        Debug.Log("Climb finished! Object velocity: " + momentumVelocity);
         
         StartCoroutine(ApplyMomentum(momentumVelocity));
 
