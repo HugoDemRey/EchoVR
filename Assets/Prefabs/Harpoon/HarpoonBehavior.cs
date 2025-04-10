@@ -157,7 +157,6 @@ namespace Prefabs.Harpoon
 
         protected override void OnDisable()
         {
-            Debug.Log("OnDisable: " + gameObject.name);
             base.OnDisable();
             triggerAction.action.Disable();
             triggerAction.action.performed -= OnTriggerPressed;

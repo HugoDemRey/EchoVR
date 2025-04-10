@@ -8,20 +8,39 @@ using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
 
 public class ClimbingMomentumManager : MonoBehaviour
 {
     public CharacterController characterController; // To manipulate the position of the player
+    public CustomSnapTurnProvider snapTurnProvider; // To manipulate the rotation of the player
     public InputActionProperty rightControllerVelocityAction; // Link this to XRI Right/Velocity
     public InputActionProperty leftControllerVelocityAction; // Link this to XRI Left/Velocity
-    public Transform mainCamera; // Reference to the camera offset transform
-    public InputActionProperty headRotationAction; // Link this to XRI Head/Rotation
+    
+    private float angleOffset = 0f; // Offset to apply to the rotation
     private ClimbProvider climbProvider;
     private LocomotionState previousPhase;
     private float FORCE_MULTIPLIER = 3f; // Adjust this value to control the momentum
 
     private float MOMENTUM_DECAY_RATE = 0.98f; // Adjust this value to control how quickly the momentum decays
     private float MIN_VELOCITY_THRESHOLD = 1f; // Threshold to stop the coroutine
+
+    void OnEnable()
+    {
+        if (snapTurnProvider != null)
+            snapTurnProvider.onSnapTurn += HandleSnapTurn;
+    }
+
+    void OnDisable()
+    {
+        if (snapTurnProvider != null)
+            snapTurnProvider.onSnapTurn -= HandleSnapTurn;
+    }
+
+    private void HandleSnapTurn(float angle)
+    {
+        angleOffset = (angleOffset + angle) % 360;
+    }
 
     void Start()
     {
@@ -70,14 +89,9 @@ public class ClimbingMomentumManager : MonoBehaviour
         Vector3 leftVelocity = leftControllerVelocityAction.action.ReadValue<Vector3>();
 
         Vector3 greatestVelocity = rightVelocity.magnitude > leftVelocity.magnitude ? rightVelocity : leftVelocity;
-
-
-        // Quaternion offsetRotation = Quaternion.Inverse(headRotationAction.action.ReadValue<Quaternion>()) * mainCamera.rotation;
-        // greatestVelocity = offsetRotation * greatestVelocity; // Rotate the velocity vector to match the camera's rotation
-
-
-        // Correcting the velocity to the camera's offset in the virtual world
-        //greatestVelocity = mainCamera.TransformDirection(greatestVelocity); 
+        // Apply the angle offset to the velocity
+        Quaternion rotation = Quaternion.Euler(0, angleOffset, 0);
+        greatestVelocity = rotation * greatestVelocity; // Rotate the velocity vector
 
         Vector3 momentumVelocity = -greatestVelocity * FORCE_MULTIPLIER; // Adjust this value to control the momentum
         
