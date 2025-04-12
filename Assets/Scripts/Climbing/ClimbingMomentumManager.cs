@@ -20,6 +20,7 @@ public class ClimbingMomentumManager : MonoBehaviour
     private float angleOffset = 0f; // Offset to apply to the rotation
     private ClimbProvider climbProvider;
     private LocomotionState previousPhase;
+    private ClimbInteractable lastClimbAnchorInteractable;
     private float FORCE_MULTIPLIER = 3f; // Adjust this value to control the momentum
 
     private float MOMENTUM_DECAY_RATE = 0.98f; // Adjust this value to control how quickly the momentum decays
@@ -64,7 +65,10 @@ public class ClimbingMomentumManager : MonoBehaviour
 
         LocomotionState currentPhase = climbProvider.locomotionState;
 
-        // Check if we just transitioned to Done
+        if (climbProvider.climbAnchorInteractable != null && lastClimbAnchorInteractable != climbProvider.climbAnchorInteractable) {
+            lastClimbAnchorInteractable = climbProvider.climbAnchorInteractable;
+            Debug.Log("Climb Anchor Interactable: " + lastClimbAnchorInteractable.gameObject.name);
+        }
         if (previousPhase != LocomotionState.Ended && currentPhase == LocomotionState.Ended){
             OnClimbFinished();
         }
@@ -82,11 +86,23 @@ public class ClimbingMomentumManager : MonoBehaviour
             yield return null; // Wait for the next frame
         }
 
-        Debug.Log("Momentum Finished!");
     }
 
-     void OnClimbFinished()
+    void OnClimbFinished()
     {
+
+        OverrideMomentumForce momentumForce;
+        if (lastClimbAnchorInteractable != null && (momentumForce = lastClimbAnchorInteractable.GetComponent<OverrideMomentumForce>()) != null)
+        {
+            Debug.Log("Momentum Override found: " + momentumForce.forceMagnitude + " " + momentumForce.forceDirection);
+            Coroutine momentumCoroutine =  StartCoroutine(ApplyMomentum(momentumForce.forceDirection * momentumForce.forceMagnitude));
+            float momentumDuration = momentumForce.seconds;
+            if (momentumDuration > 0) StartCoroutine(StopMomentumAfterDelay(momentumCoroutine, momentumDuration)); // Stop after the specified duration
+            return;
+        }
+
+        Debug.Log("No momentum override found, using default momentum calculation.");
+
         // Your logic here
         Vector3 rightVelocity = rightControllerVelocityAction.action.ReadValue<Vector3>();
         Vector3 leftVelocity = leftControllerVelocityAction.action.ReadValue<Vector3>();
@@ -101,6 +117,14 @@ public class ClimbingMomentumManager : MonoBehaviour
         StartCoroutine(ApplyMomentum(momentumVelocity));
 
 
+    }
+
+        // Add this helper coroutine
+    private System.Collections.IEnumerator StopMomentumAfterDelay(Coroutine momentumCoroutine, float delayInSeconds)
+    {
+        yield return new WaitForSeconds(delayInSeconds); // Wait for 200ms
+        StopCoroutine(momentumCoroutine); // Stop the ApplyMomentum coroutine
+        Debug.Log("Momentum stopped after delay.");
     }
 }
 
