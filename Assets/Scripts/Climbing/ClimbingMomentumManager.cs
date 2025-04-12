@@ -29,6 +29,10 @@ public class ClimbingMomentumManager : MonoBehaviour
     {
         if (snapTurnProvider != null)
             snapTurnProvider.onSnapTurn += HandleSnapTurn;
+
+        Transform mainCamera = transform.parent.parent.Find("Camera Offset").Find("Main Camera");
+        angleOffset = mainCamera.eulerAngles.y; // Get the initial angle of the camera
+        
     }
 
     void OnDisable()
@@ -59,7 +63,6 @@ public class ClimbingMomentumManager : MonoBehaviour
         if (climbProvider == null) return;
 
         LocomotionState currentPhase = climbProvider.locomotionState;
-
 
         // Check if we just transitioned to Done
         if (previousPhase != LocomotionState.Ended && currentPhase == LocomotionState.Ended){
