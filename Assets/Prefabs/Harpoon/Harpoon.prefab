@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: 8805436594435721868}
   - component: {fileID: 4413521727418440957}
   - component: {fileID: 8097871450700237508}
+  - component: {fileID: 8478231777074592388}
   m_Layer: 0
   m_Name: Harpoon
   m_TagString: Untagged
@@ -503,9 +504,111 @@ MonoBehaviour:
   harpoonTip: {fileID: 5065134691184190694}
   ropePrefab: {fileID: 891548498467375308, guid: a86aa57d0ee1a47b38659ba0b13f5668, type: 3}
   grabRadius: 0.5
-  infiniteAmmo: 1
+  infiniteAmmo: 0
   triggerMaterial: {fileID: 2100000, guid: 2d67b423122724a5ebcfd4a8e04c0f28, type: 2}
   validCrosshairSprite: {fileID: 21300000, guid: 6e7ec49fd212c4166a97db1fefa5a976, type: 3}
   invalidCrosshairSprite: {fileID: 21300000, guid: 6ca9ec86278c94846aa2611feb6f2899, type: 3}
   ropeStartTag: HarpoonStart
   ropeEndTag: HarpoonEnd
+  startPlacedSound: {fileID: 8300000, guid: 3064622894b9a4ae5a04fe8765592737, type: 3}
+  ropePlacedSound: {fileID: 8300000, guid: 0283fff1bb6f743ebb9c04a8b61944ec, type: 3}
+  validTargetSound: {fileID: 8300000, guid: 92c36397c6cfa47af9ff9e06cb2105d4, type: 3}
+  invalidTargetSound: {fileID: 8300000, guid: 2f57e53b6796e4929a1c1dc53ec770ff, type: 3}
+  itemEquippedSound: {fileID: 8300000, guid: 3c8d02cff64f041578ab1224ef85ca63, type: 3}
+--- !u!82 &8478231777074592388
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7293273173659643444}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
