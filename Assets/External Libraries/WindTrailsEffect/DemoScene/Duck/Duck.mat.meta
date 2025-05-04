@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 86935a51be8745941ae72965a973b43f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174417
+  packageName: Wind Trails Effect
+  packageVersion: 1.0
+  assetPath: Assets/WindTrailsEffect/DemoScene/Duck/Duck.mat
+  uploadId: 378249
