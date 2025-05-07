@@ -1,6 +1,4 @@
-using Prefabs.ZipLineHandle;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Prefabs.Rope
 {
@@ -37,11 +35,9 @@ namespace Prefabs.Rope
 
         private void UpdateLineVisuals()
         {
-            Debug.Log("Current Cylinder Position: " + cylinder.transform.position);
             cylinder.transform.localScale = new Vector3(width, Vector3.Distance(start, end) / 2f, width);
             //cylinder.transform.localPosition = Vector3.zero; //Vector3.Lerp(start, end, .5f);
             //cylinder.transform.localRotation = Quaternion.identity; // Quaternion.FromToRotation(Vector3.up, (end - start).normalized);
-            Debug.Log("New Cylinder Position: " + cylinder.transform.position);
         }
 
         private void UpdateCollider()

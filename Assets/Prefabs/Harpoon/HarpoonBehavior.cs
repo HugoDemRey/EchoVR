@@ -106,6 +106,9 @@ namespace Prefabs.Harpoon
                     _ropePreviewLineRenderer.SetPosition(0, _start);
                     _ropePreviewLineRenderer.SetPosition(1, hit.point);
                 }
+            } else if (_stage == Stage.StartPlaced)
+            {
+                _ropePreviewLineRenderer.enabled = false;
             }
             
             if (nextTargetType == TargetType.Valid && _targetType != TargetType.Valid)
@@ -130,6 +133,13 @@ namespace Prefabs.Harpoon
             }
             
             _crosshair.SetActive(true);
+        }
+        
+        public void Reload()
+        {
+            _stage = Stage.None;
+            _ropePreviewLineRenderer.enabled = false;
+            _crosshair.SetActive(false);
         }
 
         private bool IsTooFar(Transform otherTransform)
@@ -188,7 +198,13 @@ namespace Prefabs.Harpoon
 
         private void OnTriggerPressed(InputAction.CallbackContext context)
         {
-            if (!_isHeld) return;
+            if (!_isHeld)
+            {
+                Debug.LogWarning("Harpoon's OnTriggerPressed called while not held");
+                return;
+            }
+            
+            Debug.Log("Harpoon's OnTriggerPressed called");
             Shoot();
         }
 
@@ -200,6 +216,7 @@ namespace Prefabs.Harpoon
                 )
             {
                 PlayInvalidTargetFeedback();
+                Debug.Log("Invalid target");
                 return;
             };
             
@@ -211,15 +228,18 @@ namespace Prefabs.Harpoon
                     _start = hit.point;
                     _stage = Stage.StartPlaced;
                     PlayStartPlacedFeedback();
+                    Debug.Log("Start placed");
                     break;
                 case Stage.StartPlaced:
                     _end = hit.point;
                     _stage = infiniteAmmo ? Stage.None : Stage.Done;
                     PlayRopePlacedFeedback();
+                    Debug.Log("End placed");
                     PlaceRope();
                     break;
                 case Stage.Done:
                 default:
+                    Debug.Log("Already placed or no ammo");
                     break;
             }
         }
