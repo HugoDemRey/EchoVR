@@ -212,7 +212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8805436594435721868}
   - component: {fileID: 4413521727418440957}
-  - component: {fileID: 257079151171499439}
+  - component: {fileID: 9048389332379011721}
   m_Layer: 0
   m_Name: GrabbableZipLineHandle
   m_TagString: ZipLineHandle
@@ -265,7 +265,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &257079151171499439
+--- !u!114 &9048389332379011721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -274,12 +274,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7293273173659643444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 314a49e17921496fab555a326fa511ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
-  m_Colliders:
-  - {fileID: 3112304897323406216}
+  m_Colliders: []
   m_InteractionLayers:
     m_Bits: 1
   m_DistanceCalculationMode: 1
@@ -364,7 +363,7 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   m_AttachTransform: {fileID: 2278834913731345384}
   m_SecondaryAttachTransform: {fileID: 0}
-  m_UseDynamicAttach: 0
+  m_UseDynamicAttach: 1
   m_MatchAttachPosition: 1
   m_MatchAttachRotation: 1
   m_SnapToColliderVolume: 1
@@ -412,3 +411,4 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 1
+  grabRadius: 1

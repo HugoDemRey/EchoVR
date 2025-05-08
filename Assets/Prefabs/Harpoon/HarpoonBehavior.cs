@@ -4,19 +4,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
-using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using InputDevice = UnityEngine.XR.InputDevice;
 
 namespace Prefabs.Harpoon
 {
-    public class HarpoonBehavior : XRGrabInteractable
+    public class HarpoonBehavior : XRLimitedGrabInteractable
     {
         public InputActionReference triggerAction;
         public GameObject harpoonTip;
         public GameObject ropePrefab;
-        public float grabRadius;
         public bool infiniteAmmo = true;
+        public ArrowSocket arrowSocket;
         
         public Material triggerMaterial;
         
@@ -32,10 +30,7 @@ namespace Prefabs.Harpoon
         public AudioClip invalidTargetSound;
         public AudioClip itemEquippedSound;
 
-        private XRGrabInteractable _grabInteractable;
-        private bool _isHeld;
-
-        private TargetType _targetType = TargetType.None;
+        private TargetType _targetType;
         private Stage _stage = Stage.None;
         private Vector3 _start;
         private Vector3 _end;
@@ -63,6 +58,7 @@ namespace Prefabs.Harpoon
 
         private void Start()
         {
+            _stage = infiniteAmmo ? Stage.None : Stage.Done;
             _crosshair = new GameObject("CrossSprite");
             _renderer = _crosshair.AddComponent<SpriteRenderer>();
             _renderer.sortingOrder = 10; // Gives priority
@@ -74,15 +70,13 @@ namespace Prefabs.Harpoon
         protected override void Awake()
         {
             base.Awake();
-            _grabInteractable = GetComponent<XRGrabInteractable>();
-            _grabInteractable.selectEntered.AddListener(OnGrab);
-            _grabInteractable.selectExited.AddListener(OnRelease);
+            selectEntered.AddListener(OnGrab);
         }
 
         private void Update()
         {
             TargetType nextTargetType = TargetType.None;
-            if (_isHeld && Physics.Raycast(harpoonTip.transform.position, harpoonTip.transform.forward, out var hit))
+            if (isHeld && Physics.Raycast(harpoonTip.transform.position, harpoonTip.transform.forward, out var hit))
             {
                 nextTargetType = IsValidTarget(hit.collider, _stage) ? TargetType.Valid : TargetType.Invalid;
                 
@@ -142,11 +136,6 @@ namespace Prefabs.Harpoon
             _crosshair.SetActive(false);
         }
 
-        private bool IsTooFar(Transform otherTransform)
-        {
-            return Vector3.Distance(transform.position, otherTransform.position) > grabRadius;
-        }
-
         private bool IsValidTarget(Collider c, Stage stage)
         {
             switch (stage)
@@ -159,16 +148,6 @@ namespace Prefabs.Harpoon
                 default:
                     return false;
             }
-        }
-
-        public override bool IsSelectableBy(IXRSelectInteractor interactor)
-        {
-            return !IsTooFar(interactor.transform) && base.IsSelectableBy(interactor);
-        }
-
-        public override bool IsHoverableBy(IXRHoverInteractor interactor)
-        {
-            return !_isHeld && !IsTooFar(interactor.transform) && base.IsHoverableBy(interactor);
         }
 
         protected override void OnEnable()
@@ -187,18 +166,12 @@ namespace Prefabs.Harpoon
 
         private void OnGrab(SelectEnterEventArgs args)
         {
-            _isHeld = true;
             PlayItemEquippedFeedback();
-        }
-
-        private void OnRelease(SelectExitEventArgs args)
-        {
-            _isHeld = false;
         }
 
         private void OnTriggerPressed(InputAction.CallbackContext context)
         {
-            if (!_isHeld)
+            if (!isHeld)
             {
                 Debug.LogWarning("Harpoon's OnTriggerPressed called while not held");
                 return;
@@ -236,6 +209,7 @@ namespace Prefabs.Harpoon
                     PlayRopePlacedFeedback();
                     Debug.Log("End placed");
                     PlaceRope();
+                    arrowSocket.DestroyArrow();
                     break;
                 case Stage.Done:
                 default:

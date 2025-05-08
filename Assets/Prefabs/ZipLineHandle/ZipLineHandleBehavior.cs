@@ -19,6 +19,7 @@ public class ZipLineHandleBehavior : ClimbInteractable
     private float _animationStartTime;
     private float _animationDuration;
 
+    //TODO turn into a coroutine
     private void Update() {
         if (_running)
         {
