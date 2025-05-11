@@ -31,6 +31,7 @@ public class ClimbHandSnapping : MonoBehaviour
 
         climbInteractable = GetComponent<ClimbInteractable>();
 
+
         // Add all snapping points to the list
         SnappingPoints = new List<Transform>();
         foreach (Transform child in transform) {
@@ -40,6 +41,7 @@ public class ClimbHandSnapping : MonoBehaviour
             }
         }
 
+        Debug.Log("Snapping Points: " + SnappingPoints.Count);
         // foreach (Transform child in transform.parent)
         // {
         //     if (child.CompareTag(SNAPPING_POINT_TAG)) SnappingPoints.Add(child);

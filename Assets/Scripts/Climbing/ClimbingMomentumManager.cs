@@ -67,7 +67,6 @@ public class ClimbingMomentumManager : MonoBehaviour
 
         if (climbProvider.climbAnchorInteractable != null && lastClimbAnchorInteractable != climbProvider.climbAnchorInteractable) {
             lastClimbAnchorInteractable = climbProvider.climbAnchorInteractable;
-            Debug.Log("Climb Anchor Interactable: " + lastClimbAnchorInteractable.gameObject.name);
         }
         if (previousPhase != LocomotionState.Ended && currentPhase == LocomotionState.Ended){
             OnClimbFinished();
@@ -94,7 +93,6 @@ public class ClimbingMomentumManager : MonoBehaviour
         OverrideMomentumForce momentumForce;
         if (lastClimbAnchorInteractable != null && (momentumForce = lastClimbAnchorInteractable.GetComponent<OverrideMomentumForce>()) != null)
         {
-            Debug.Log("Momentum Override found: " + momentumForce.forceMagnitude + " " + momentumForce.forceDirection);
             Coroutine momentumCoroutine =  StartCoroutine(ApplyMomentum(momentumForce.forceDirection * momentumForce.forceMagnitude));
             float momentumDuration = momentumForce.seconds;
             if (momentumDuration > 0) StartCoroutine(StopMomentumAfterDelay(momentumCoroutine, momentumDuration)); // Stop after the specified duration
@@ -124,7 +122,6 @@ public class ClimbingMomentumManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delayInSeconds); // Wait for 200ms
         StopCoroutine(momentumCoroutine); // Stop the ApplyMomentum coroutine
-        Debug.Log("Momentum stopped after delay.");
     }
 }
 
