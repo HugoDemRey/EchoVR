@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7824361791339082797}
   - component: {fileID: 8264331469220936055}
   - component: {fileID: 1843850793994892612}
-  - component: {fileID: 7853067130261265357}
+  - component: {fileID: 4001776022520969862}
   m_Layer: 0
   m_Name: Zip Line Start
   m_TagString: Untagged
@@ -110,7 +110,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7853067130261265357
+--- !u!114 &4001776022520969862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,9 +124,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
   m_InteractionLayers:
-    m_Bits: 4294967295
+    m_Bits: 1
   m_Handedness: 0
-  m_AttachTransform: {fileID: 0}
+  m_AttachTransform: {fileID: 6741431058219403316}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
   m_StartingSelectedInteractable: {fileID: 0}
@@ -158,6 +158,7 @@ MonoBehaviour:
   m_TargetBoundsSize: {x: 1, y: 1, z: 1}
   handlePrefab: {fileID: 8366152327264727131, guid: 79b3635dea14543a0803a72f558e0cc2, type: 3}
   rope: {fileID: 3639078454080767611}
+  handleTag: ZipLineHandle
 --- !u!1 &5839569118264559239
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +263,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.015
+  m_Radius: 0.01
   m_Height: 3.6733062
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
