@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 36c3c1dbca10aee47a030a79e7efc29c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174417
+  packageName: Wind Trails Effect
+  packageVersion: 1.0
+  assetPath: Assets/WindTrailsEffect/DemoScene/Skybox.mat
+  uploadId: 378249
