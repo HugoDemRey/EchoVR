@@ -36,8 +36,6 @@ namespace Prefabs.Rope
         private void UpdateLineVisuals()
         {
             cylinder.transform.localScale = new Vector3(width, Vector3.Distance(start, end) / 2f, width);
-            //cylinder.transform.localPosition = Vector3.zero; //Vector3.Lerp(start, end, .5f);
-            //cylinder.transform.localRotation = Quaternion.identity; // Quaternion.FromToRotation(Vector3.up, (end - start).normalized);
         }
 
         private void UpdateCollider()

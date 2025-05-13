@@ -84,7 +84,6 @@ namespace Prefabs.Harpoon
             TargetType nextTargetType = TargetType.None;
             if (isHeld && Physics.Raycast(harpoonTip.transform.position, harpoonTip.transform.forward, out var hit))
             {
-                Debug.Log("Hit something");
                 nextTargetType = IsValidTarget(hit.collider, _stage) ? TargetType.Valid : TargetType.Invalid;
                 
                 _crosshair.transform.position = hit.point + hit.normal * 0.01f;
@@ -102,7 +101,6 @@ namespace Prefabs.Harpoon
                 }
             } else if (_stage == Stage.StartPlaced)
             {
-                Debug.Log("Hit something but not valid");
                 _ropePreviewLineRenderer.enabled = false;
             }
             
@@ -153,7 +151,6 @@ namespace Prefabs.Harpoon
 
         protected override void OnEnable()
         {
-            Debug.Log("Harpoon's OnEnable called");
             triggerAction.action.Enable();
             triggerAction.action.performed += OnTriggerPressed;
             base.OnEnable();
@@ -161,7 +158,6 @@ namespace Prefabs.Harpoon
 
         protected override void OnDisable()
         {
-            Debug.Log("Harpoon's OnDisable called");
             base.OnDisable();
             triggerAction.action.Disable();
             triggerAction.action.performed -= OnTriggerPressed;
@@ -181,7 +177,6 @@ namespace Prefabs.Harpoon
                 return;
             }
             
-            Debug.Log("Harpoon's OnTriggerPressed called");
             Shoot();
         }
 

@@ -21,46 +21,58 @@ public class ZipLineHandleBehavior : ClimbInteractable
 
     //TODO turn into a coroutine
     private void Update() {
-        if (_running)
+        if (_running && UpdateAnimation())
         {
-            var currentTime = Time.time;
-            var currentDuration = Mathf.Clamp01((currentTime - _animationStartTime) / _animationDuration);
-
-            Vector3 newPosition = Vector3.Lerp(
-                ropeBehavior.GetStartPoint(),
-                ropeBehavior.GetEndPoint(),
-                UpdatePosition(currentDuration)
-            );
-
-            if (_attached)
-            {
-                Vector3 relativePosition = newPosition - transform.position;
-                _characterController.Move(relativePosition);
-            }
-
-            transform.position = newPosition;
-
-            if (currentTime - _animationStartTime >= _animationDuration)
-            {
-                _running = false;
-                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-                Destroy(this);
-                return;
-            }
+            _running = false;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            Destroy(this);
         }
 
         if (_triggerAnimation && !_running)
         {
-            _running = true;
-            _triggerAnimation = false;
-            _animationStartTime = Time.time;
-            _animationDuration = Vector3.Distance(ropeBehavior.GetStartPoint(), ropeBehavior.GetEndPoint()) / 5f;
+            TriggerAnimation();
         }
     }
 
-    private float UpdatePosition(float time)
+    /// Updates the animation state for the zipline handle movement. Calculates the new position
+    /// of the handle and player, if attached.
+    /// <returns>
+    /// Returns true if the animation has completed and the handle should not be contrained anymore.
+    /// </returns>
+    private bool UpdateAnimation()
     {
-        return (Mathf.Pow(time + 1, 2f) - 1) / 3f;
+        var currentTime = Time.time;
+        var currentDurationPct = Mathf.Clamp01((currentTime - _animationStartTime) / _animationDuration);
+
+        Vector3 newPosition = Vector3.Lerp(
+            ropeBehavior.GetStartPoint(),
+            ropeBehavior.GetEndPoint(),
+            GetPositionPctFromTimePct(currentDurationPct)
+        );
+
+        if (_attached)
+        {
+            Vector3 relativePosition = newPosition - transform.position;
+            _characterController.Move(relativePosition);
+        }
+
+        transform.position = newPosition;
+
+        return currentTime - _animationStartTime >= _animationDuration;
+    }
+
+    /// Initiates the zipline handle animation by setting the parameters.
+    private void TriggerAnimation()
+    {
+        _running = true;
+        _triggerAnimation = false;
+        _animationStartTime = Time.time;
+        _animationDuration = Vector3.Distance(ropeBehavior.GetStartPoint(), ropeBehavior.GetEndPoint()) / 5f;
+    }
+
+    private float GetPositionPctFromTimePct(float timePct)
+    {
+        return (Mathf.Pow(timePct + 1, 2f) - 1) / 3f;
     }
     
     public void ForceUpdate(RopeBehavior newRopeBehavior, Transform newPivotTransform)
@@ -68,7 +80,7 @@ public class ZipLineHandleBehavior : ClimbInteractable
         ropeBehavior = newRopeBehavior;
         
         transform.position = newPivotTransform.position;
-        transform.rotation = newPivotTransform.rotation;
+        transform.rotation = Quaternion.identity;
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -115,6 +127,12 @@ public class ZipLineHandleBehavior : ClimbInteractable
         _attached = true;
         _triggerAnimation = true;
         _characterController = GameObject.FindGameObjectWithTag("Origin").GetComponent<CharacterController>();
+        
+        if (_characterController == null)
+        {
+            Debug.LogWarning("No character controller found. The XR Rig should be tagged as 'Origin'.");
+        }
+
         climbProvider.enabled = false;
     }
 

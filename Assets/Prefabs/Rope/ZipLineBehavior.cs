@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace Prefabs.Rope
@@ -10,17 +11,21 @@ namespace Prefabs.Rope
         public ZipLineHandleBehavior handlePrefab;
         public RopeBehavior rope;
         public String handleTag;
- 
-            protected override void OnSelectEntered(SelectEnterEventArgs args)
-            {
-                Debug.Log("OnSelectEntered in ZipLineBehavior");
-                if (!args.interactableObject.transform.CompareTag(handleTag)) return;
 
-                Transform pos = transform;
-                Destroy(this);
-                Destroy(args.interactableObject.transform.gameObject);
-                ZipLineHandleBehavior handle = Instantiate(handlePrefab);
-                handle.ForceUpdate(rope, pos);
-            }
+        public override bool CanSelect(IXRSelectInteractable interactable)
+        {
+            return base.CanSelect(interactable) && interactable.transform.CompareTag(handleTag);
+        }
+
+        protected override void OnSelectEntered(SelectEnterEventArgs args)
+        {
+            Debug.Log("OnSelectEntered in ZipLineBehavior");
+
+            Transform pos = transform;
+            Destroy(this);
+            Destroy(args.interactableObject.transform.gameObject);
+            ZipLineHandleBehavior handle = Instantiate(handlePrefab);
+            handle.ForceUpdate(rope, pos);
+        }
     }
 }
