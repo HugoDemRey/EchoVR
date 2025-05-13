@@ -65,12 +65,18 @@ namespace Prefabs.Harpoon
             _crosshair.transform.localScale = CrosshairScale;
             _mainCamera = Camera.main;
             _ropePreviewLineRenderer = gameObject.AddComponent<LineRenderer>();
+            _ropePreviewLineRenderer.startWidth = 0.01f;
+            _ropePreviewLineRenderer.endWidth = 0.01f;
+            _ropePreviewLineRenderer.positionCount = 2;
+            _ropePreviewLineRenderer.useWorldSpace = true;
+            _ropePreviewLineRenderer.material = triggerMaterial;
         }
 
         protected override void Awake()
         {
             base.Awake();
             selectEntered.AddListener(OnGrab);
+            
         }
 
         private void Update()
@@ -78,6 +84,7 @@ namespace Prefabs.Harpoon
             TargetType nextTargetType = TargetType.None;
             if (isHeld && Physics.Raycast(harpoonTip.transform.position, harpoonTip.transform.forward, out var hit))
             {
+                Debug.Log("Hit something");
                 nextTargetType = IsValidTarget(hit.collider, _stage) ? TargetType.Valid : TargetType.Invalid;
                 
                 _crosshair.transform.position = hit.point + hit.normal * 0.01f;
@@ -90,18 +97,12 @@ namespace Prefabs.Harpoon
                 if (_stage == Stage.StartPlaced)
                 {
                     _ropePreviewLineRenderer.enabled = true;
-                    
-                    _ropePreviewLineRenderer.startWidth = 0.01f;
-                    _ropePreviewLineRenderer.endWidth = 0.01f;
-                    _ropePreviewLineRenderer.positionCount = 2;
-                    _ropePreviewLineRenderer.useWorldSpace = true;
-                    _ropePreviewLineRenderer.material = triggerMaterial;
-                    
                     _ropePreviewLineRenderer.SetPosition(0, _start);
                     _ropePreviewLineRenderer.SetPosition(1, hit.point);
                 }
             } else if (_stage == Stage.StartPlaced)
             {
+                Debug.Log("Hit something but not valid");
                 _ropePreviewLineRenderer.enabled = false;
             }
             
@@ -152,20 +153,23 @@ namespace Prefabs.Harpoon
 
         protected override void OnEnable()
         {
-            base.OnEnable();
+            Debug.Log("Harpoon's OnEnable called");
             triggerAction.action.Enable();
             triggerAction.action.performed += OnTriggerPressed;
+            base.OnEnable();
         }
 
         protected override void OnDisable()
         {
+            Debug.Log("Harpoon's OnDisable called");
             base.OnDisable();
             triggerAction.action.Disable();
             triggerAction.action.performed -= OnTriggerPressed;
         }
 
-        private void OnGrab(SelectEnterEventArgs args)
+        protected void OnGrab(SelectEnterEventArgs args)
         {
+            base.OnGrab(args);
             PlayItemEquippedFeedback();
         }
 
@@ -254,7 +258,7 @@ namespace Prefabs.Harpoon
 
         private void PlaySound(AudioClip clip, Vector3 position, float volume = 1f)
         {
-            AudioSource.PlayClipAtPoint(clip, position, volume);
+            //AudioSource.PlayClipAtPoint(clip, position, volume);
         }
 
         private void HapticFeedback(float duration, float amplitude)

@@ -89,8 +89,9 @@ namespace Prefabs
         /// Updates the state to indicate that the object is currently being held.
         /// </summary>
         /// <param name="args">Ignored</param>
-        private void OnGrab(SelectEnterEventArgs args)
+        protected void OnGrab(SelectEnterEventArgs args)
         {
+            Debug.Log("Harpoon's OnGrab called");
             isHeld = true;
         }
 
@@ -100,6 +101,7 @@ namespace Prefabs
         /// <param name="args">Ignored</param>
         private void OnRelease(SelectExitEventArgs args)
         {
+            Debug.Log("Harpoon's OnRelease called");
             isHeld = false;
         }
     }
