@@ -11,6 +11,10 @@ TagManager:
   - LeftController
   - RightController
   - Origin
+  - ZipLineHandle
+  - Arrow
+  - Meteor
+  - Hand
   layers:
   - Default
   - TransparentFX
