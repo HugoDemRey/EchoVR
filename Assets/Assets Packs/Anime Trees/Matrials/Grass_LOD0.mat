@@ -58,19 +58,20 @@ Material:
     - _CastShadows: 1
     - _Cull: 0
     - _DstBlend: 0
-    - _Noise: 3.45
+    - _Noise: 5.56
+    - _NoiseMultiplier: 0.229
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SrcBlend: 1
     - _Surface: 0
-    - _WindSpeed: 1.01
-    - _WindStrength: 0.165
+    - _WindSpeed: 1.2
+    - _WindStrength: 0.206
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BottomColor: {r: 0.035555363, g: 0.4433962, b: 0.08962293, a: 0}
-    - _TopColor: {r: 0.7411765, g: 0.5433857, b: 0.12941176, a: 0}
+    - _BottomColor: {r: 0.31, g: 0.58, b: 0.04, a: 0}
+    - _TopColor: {r: 0.69, g: 0.74, b: 0.12, a: 0}
     - _WindDirection: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

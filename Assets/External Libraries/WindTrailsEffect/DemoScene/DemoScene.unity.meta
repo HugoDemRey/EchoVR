@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 59e25a83ea9e1419289e3beb78d18a80
+guid: 123b6adef6f69c942822d05d4ba09f60
 DefaultImporter:
   externalObjects: {}
   userData: 
@@ -10,5 +10,5 @@ AssetOrigin:
   productId: 174417
   packageName: Wind Trails Effect
   packageVersion: 1.0
-  assetPath: Assets/WindTrailsEffect/DemoScene/DemoScene.unity
+  assetPath: Assets/External Libraries/WindTrailsEffect/DemoScene/DemoScene.unity
   uploadId: 378249
