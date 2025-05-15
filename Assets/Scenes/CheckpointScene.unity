@@ -393,23 +393,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4220274215976610951, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4220274215976610951, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4220274215976610951, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 252
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4220274215976610951, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 126
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4220274215976610951, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422659089949380333, guid: fd28f23af44f73f4a95e33435872ad15, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1188,7 +1188,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 0ebd09cef68f30f4e920790220a18524, type: 3}
   m_Resource: {fileID: 8300000, guid: 0ebd09cef68f30f4e920790220a18524, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1427,6 +1427,103 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -700013313413671452, guid: b62e480eb4c41a746a49f49408e26dee, type: 3}
+--- !u!1 &698668115 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1380917257722199641, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
+  m_PrefabInstance: {fileID: 716166501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &698668119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698668115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ba4f8d3f6594c4dbcb566739ef687f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Mediator: {fileID: 0}
+  m_TransformationPriority: 0
+  m_TurnSpeed: 60
+  m_EnableTurnLeftRight: 1
+  m_EnableTurnAround: 0
+  m_LeftHandTurnInput:
+    m_InputSourceMode: 2
+    m_InputAction:
+      m_Name: Left Hand Turn
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: ffdfffa7-b5cd-4923-a66d-e0c4c9cebad4
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_InputActionReference: {fileID: 1010738217276881514, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_ObjectReferenceObject: {fileID: 0}
+    m_ManualValue: {x: 0, y: 0}
+  m_RightHandTurnInput:
+    m_InputSourceMode: 2
+    m_InputAction:
+      m_Name: Right Hand Turn
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: 3ea4f7ba-cdc5-4d34-b8de-d27115609c7f
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_InputActionReference: {fileID: -6493913391331992944, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_ObjectReferenceObject: {fileID: 0}
+    m_ManualValue: {x: 0, y: 0}
+--- !u!114 &698668120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698668115}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f365cf844c03449bc8973eead2c3c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Mediator: {fileID: 0}
+  m_TransformationPriority: 0
+  m_TurnAmount: 45
+  m_DebounceTime: 0.5
+  m_EnableTurnLeftRight: 1
+  m_EnableTurnAround: 1
+  m_DelayTime: 0
+  m_LeftHandTurnInput:
+    m_InputSourceMode: 2
+    m_InputAction:
+      m_Name: Left Hand Snap Turn
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: 7d1e3969-2535-453f-a201-df59a16bf776
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_InputActionReference: {fileID: 0}
+    m_ObjectReferenceObject: {fileID: 0}
+    m_ManualValue: {x: 0, y: 0}
+  m_RightHandTurnInput:
+    m_InputSourceMode: 2
+    m_InputAction:
+      m_Name: Right Hand Snap Turn
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: 2a2ab3b4-16a0-4a67-8594-c96807a3a7b1
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_InputActionReference: {fileID: 0}
+    m_ObjectReferenceObject: {fileID: 0}
+    m_ManualValue: {x: 0, y: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,35 +1639,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854292, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Origin
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.433
+      value: 1.3427138
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.61
+      value: 1.5261245
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.452
+      value: -6.415176
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.50000125
+      value: -0.9899121
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.14085831
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.86602473
+      value: 0.0029657185
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.014974136
       objectReference: {fileID: 0}
     - target: {fileID: 1196301032764854295, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1584,10 +1681,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5320803583746566515, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
+      propertyPath: m_SmoothTurnEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5850830240246960803, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5850830240246960803, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
+      propertyPath: m_StepOffset
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826793800737765934, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1380917257722199641, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 698668119}
+    - targetCorrespondingSourceObject: {fileID: 1380917257722199641, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 698668120}
   m_SourcePrefab: {fileID: 100100000, guid: bb1fb17179498fb478fe6504e276e545, type: 3}
 --- !u!1001 &723019629
 PrefabInstance:

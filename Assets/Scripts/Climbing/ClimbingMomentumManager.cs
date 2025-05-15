@@ -14,6 +14,8 @@ public class ClimbingMomentumManager : MonoBehaviour
 {
     public CharacterController characterController; // To manipulate the position of the player
     public CustomSnapTurnProvider snapTurnProvider; // To manipulate the rotation of the player
+
+    public CustomContinuousTurnProvider continuousTurnProvider; // To manipulate the rotation of the player
     public InputActionProperty rightControllerVelocityAction; // Link this to XRI Right/Velocity
     public InputActionProperty leftControllerVelocityAction; // Link this to XRI Left/Velocity
     
@@ -30,6 +32,9 @@ public class ClimbingMomentumManager : MonoBehaviour
     {
         if (snapTurnProvider != null)
             snapTurnProvider.onSnapTurn += HandleSnapTurn;
+
+        if (continuousTurnProvider != null)
+            continuousTurnProvider.onContinuousTurn += HandleSnapTurn;
 
         Transform mainCamera = transform.parent.parent.Find("Camera Offset").Find("Main Camera");
         angleOffset = mainCamera.eulerAngles.y; // Get the initial angle of the camera
