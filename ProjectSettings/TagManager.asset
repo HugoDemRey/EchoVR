@@ -15,6 +15,7 @@ TagManager:
   - Arrow
   - Meteor
   - Hand
+  - Pan
   layers:
   - Default
   - TransparentFX
