@@ -45,6 +45,9 @@ public class ClimbingMomentumManager : MonoBehaviour
     {
         if (snapTurnProvider != null)
             snapTurnProvider.onSnapTurn -= HandleSnapTurn;
+
+        if (continuousTurnProvider != null)
+            continuousTurnProvider.onContinuousTurn -= HandleSnapTurn;
     }
 
     private void HandleSnapTurn(float angle)

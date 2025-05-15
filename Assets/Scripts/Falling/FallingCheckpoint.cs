@@ -8,7 +8,7 @@ public class FallingCheckpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Origin"))
         {
             Transform spawnPoint = checkpointManager.getSpawnPoint(); // Get the spawn point from the CheckpointManager
             if (spawnPoint != null)
