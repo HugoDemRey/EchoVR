@@ -4,7 +4,7 @@ using System.Collections;
 public class EatSteak : MonoBehaviour
 {
     public AudioSource eatSound;           
-    public float detectionDistance = 0.5f;  
+    public float detectionDistance = 0.2f;  
     public Transform playerCamera;         
 
     private bool isSteakEaten = false;    
