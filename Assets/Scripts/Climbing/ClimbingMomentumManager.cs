@@ -31,26 +31,31 @@ public class ClimbingMomentumManager : MonoBehaviour
     void OnEnable()
     {
         if (snapTurnProvider != null)
-            snapTurnProvider.onSnapTurn += HandleSnapTurn;
+            snapTurnProvider.onSnapTurn += HandleTurn;
 
         if (continuousTurnProvider != null)
-            continuousTurnProvider.onContinuousTurn += HandleSnapTurn;
+            continuousTurnProvider.onContinuousTurn += HandleTurn;
 
         Transform mainCamera = transform.parent.parent.Find("Camera Offset").Find("Main Camera");
-        angleOffset = mainCamera.eulerAngles.y; // Get the initial angle of the camera
+        angleOffset += mainCamera.eulerAngles.y; // Get the initial angle of the camera  
         
+    }
+
+    public void Adjust(float newAngle)
+    {
+        angleOffset = newAngle;
     }
 
     void OnDisable()
     {
         if (snapTurnProvider != null)
-            snapTurnProvider.onSnapTurn -= HandleSnapTurn;
+            snapTurnProvider.onSnapTurn -= HandleTurn;
 
         if (continuousTurnProvider != null)
-            continuousTurnProvider.onContinuousTurn -= HandleSnapTurn;
+            continuousTurnProvider.onContinuousTurn -= HandleTurn;
     }
 
-    private void HandleSnapTurn(float angle)
+    private void HandleTurn(float angle)
     {
         angleOffset = (angleOffset + angle) % 360;
     }
@@ -107,7 +112,6 @@ public class ClimbingMomentumManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("No momentum override found, using default momentum calculation.");
 
         // Your logic here
         Vector3 rightVelocity = rightControllerVelocityAction.action.ReadValue<Vector3>();
