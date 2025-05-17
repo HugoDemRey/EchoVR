@@ -8,7 +8,7 @@ public class PanNearFireDetector : MonoBehaviour
     {
         if (other.CompareTag("Pan")) 
         {
-            cookingManager.StartCooking();
+            cookingManager.panNearFire = true;
         }
     }
 
@@ -16,7 +16,7 @@ public class PanNearFireDetector : MonoBehaviour
     {
         if (other.CompareTag("Pan"))  
         {
-            
-        }
+            cookingManager.panNearFire = false;
+        }
     }
 }

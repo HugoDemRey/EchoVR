@@ -10,6 +10,8 @@ public class CookingManager : MonoBehaviour
     public AudioSource cookingSound;  
     public Transform steakParent;
     public ParticleSystem smokeEffect;  
+    public bool isSteakInPan = false;
+    public bool panNearFire = false;
 
     private bool isCooking = false;    
     private float cookingTime = 7f;
@@ -23,7 +25,7 @@ public class CookingManager : MonoBehaviour
 
     void Update()
     {
-        if (isCooking && rawSteak.activeSelf)
+        if (!isCooking && rawSteak.activeSelf && isSteakInPan && panNearFire)
         {
             StartCooking();
         }
@@ -59,18 +61,19 @@ public class CookingManager : MonoBehaviour
         cookedSteak.SetActive(true);  
 
         cookedSteak.transform.position = rawSteak.transform.position;
-
         cookedSteak.transform.rotation = rawSteak.transform.rotation;
+
+        cookedSteak.transform.SetParent(rawSteak.transform.parent);
 
         cookingSound.Stop();
 
     }
 
-    public void PlaceSteakInPan()
-    {
-        rawSteak.SetActive(true);  
-        cookedSteak.SetActive(false);  
-        rawSteak.transform.position = steakParent.position; 
-        rawSteak.transform.rotation = steakParent.rotation; 
-    }
+    // public void PlaceSteakInPan()
+    // {
+    //     rawSteak.SetActive(true);  
+    //     cookedSteak.SetActive(false);  
+    //     rawSteak.transform.position = steakParent.position; 
+    //     rawSteak.transform.rotation = steakParent.rotation; 
+    // }
 }
