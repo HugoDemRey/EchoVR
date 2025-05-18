@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 59bff0f39539b4d458f46b76b911eb5b
+guid: e4b98d689ece2ff458ecf5c35482e65f
 DefaultImporter:
   externalObjects: {}
   userData: 
@@ -10,5 +10,6 @@ AssetOrigin:
   productId: 249533
   packageName: AA Low Poly Medieval Environment
   packageVersion: 1.0.0
-  assetPath: Assets/Assets Packs/AA Low Poly Medieval Environment/SampleScene/AAMedievalSampleScene.unity
+  assetPath: Assets/Assets Packs/Environnment customization packs/AA Low Poly Medieval
+    Environment/SampleScene/AAMedievalSampleScene.unity
   uploadId: 660542
