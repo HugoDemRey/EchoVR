@@ -26,7 +26,7 @@ public class ClimbingMomentumManager : MonoBehaviour
     private float FORCE_MULTIPLIER = 3f; // Adjust this value to control the momentum
 
     private float MOMENTUM_DECAY_RATE = 0.98f; // Adjust this value to control how quickly the momentum decays
-    private float MIN_VELOCITY_THRESHOLD = 1f; // Threshold to stop the coroutine
+    private float MIN_VELOCITY_THRESHOLD = 2f; // Threshold to stop the coroutine
 
     void OnEnable()
     {
