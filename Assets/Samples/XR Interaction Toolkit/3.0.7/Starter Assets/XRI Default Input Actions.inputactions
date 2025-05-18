@@ -452,6 +452,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Velocity",
+                    "type": "Value",
+                    "id": "80aef167-46b1-4423-9dd0-cee7cfb0b236",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -859,6 +868,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Thumbstick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd7f3f28-8e85-4143-906f-b7b3089ccee0",
+                    "path": "<XRController>{LeftHand}/{DeviceVelocity}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Velocity",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1523,6 +1543,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Velocity",
+                    "type": "Value",
+                    "id": "133f9556-27a2-48c4-996d-3b7d53a14e8d",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1930,6 +1959,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Thumbstick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39fc263b-f710-4222-b4e5-c4eb4c349289",
+                    "path": "<XRController>{RightHand}/{DeviceVelocity}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Velocity",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

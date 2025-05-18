@@ -1,0 +1,3 @@
+C:\Users\Hugo\OneDrive\Desktop\EPFL\MA2\Virtual Reality\EchoVR\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\Hugo\OneDrive\Desktop\EPFL\MA2\Virtual Reality\EchoVR\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
+C:\Users\Hugo\OneDrive\Desktop\EPFL\MA2\Virtual Reality\EchoVR\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
