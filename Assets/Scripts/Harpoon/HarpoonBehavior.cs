@@ -173,7 +173,6 @@ namespace Prefabs.Harpoon
         {
             if (!isHeld)
             {
-                Debug.LogWarning("Harpoon's OnTriggerPressed called while not held");
                 return;
             }
             

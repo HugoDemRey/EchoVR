@@ -1,8 +1,10 @@
+using System;
 using Prefabs.Rope;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Gravity;
 
 /// <summary>
 /// Represents the behavior of a zip line handle, managing interactions with player hands
@@ -61,10 +63,30 @@ public class ZipLineHandleBehavior : ClimbInteractable
     private float _animationDuration;
 
     /// <summary>
+    /// Initializes the zip line handle behavior. Sets reference components.
+    /// </summary>
+    private void Start()
+    {
+        GameObject origin = GameObject.FindGameObjectWithTag("Origin");
+        if (!origin)
+        {
+            Debug.LogWarning("No XR origin found. The XR Rig should be tagged as 'Origin'.");
+        }
+        
+        _characterController = origin.GetComponent<CharacterController>();
+        if (_characterController == null)
+        {
+            Debug.LogWarning("No CharacterController found.");
+        }
+
+    }
+
+    /// <summary>
     /// Handles per-frame updates for the zip line handle behavior. Checks and updates the animation
     /// state, applies constraints when the animation completes, and triggers the animation if required.
     /// </summary>
-    private void Update() {
+    private void Update()
+    {
         if (_running && UpdateAnimation())
         {
             // Animation completed
@@ -85,7 +107,7 @@ public class ZipLineHandleBehavior : ClimbInteractable
     /// of the handle and player, if attached.
     /// </summary>
     /// <returns>
-    /// Returns true if the animation has completed and the handle should not be contrained anymore.
+    /// Returns true if the animation has completed and the handle should not be constrained anymore.
     /// </returns>
     private bool UpdateAnimation()
     {
@@ -158,18 +180,24 @@ public class ZipLineHandleBehavior : ClimbInteractable
     /// <param name="args">The event arguments containing information about the interactor and interaction.</param>
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        base.OnSelectEntered(args);
+        Debug.Log("OnSelectEntered in ZipLineHandleBehavior");
         
-        if (_leftHandInteractor is null && args.interactorObject.handedness == InteractorHandedness.Left)
+        if (args.interactorObject.handedness == InteractorHandedness.Left)
         {
             Debug.Log("Left hand grabbed the handle");
             _leftHandInteractor = args.interactorObject;
         }
-        else if (_rightHandInteractor is null && args.interactorObject.handedness == InteractorHandedness.Right)
+        else if (args.interactorObject.handedness == InteractorHandedness.Right)
         {
             Debug.Log("Right hand grabbed the handle");
             _rightHandInteractor = args.interactorObject;
         }
+        else
+        {
+            Debug.Log("Handle grabbed by hand: " + args.interactorObject.handedness);
+        }
+        
+        base.OnSelectEntered(args);
         
         if (_leftHandInteractor is not null && _rightHandInteractor is not null)
         {
@@ -211,14 +239,8 @@ public class ZipLineHandleBehavior : ClimbInteractable
     {
         _attached = true;
         _triggerAnimation = true;
-        _characterController = GameObject.FindGameObjectWithTag("Origin").GetComponent<CharacterController>();
-        
-        if (_characterController == null)
-        {
-            Debug.LogWarning("No character controller found. The XR Rig should be tagged as 'Origin'.");
-        }
-
-        climbProvider.enabled = false; // TODO does not work to disable players physics
+        _characterController.excludeLayers = Physics.AllLayers; // Disable collisions
+        climbProvider.enabled = false; // Disable climbing (to allow forced player movement)
     }
 
     /// <summary>
@@ -227,6 +249,7 @@ public class ZipLineHandleBehavior : ClimbInteractable
     private void DetachPlayer()
     {
         _attached = false;
-        climbProvider.enabled = true;
+        climbProvider.enabled = true; // Re-enable climbing
+        _characterController.excludeLayers = 0; // Reset collisions
     }
 }
