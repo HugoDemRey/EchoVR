@@ -58,8 +58,6 @@ namespace Prefabs.Rope
             // Zip line
             if (!Mathf.Approximately(start.y, end.y))
             {
-                zipLineStart!.transform.localScale = Vector3.one * (width * 3);
-                zipLineEnd!.transform.localScale = Vector3.one * (width * 3);
                 Vector3 startTrigger = (1f - snapSpherePosition) * start + snapSpherePosition * end;
                 Vector3 endTrigger = (1f - snapSpherePosition) * end + snapSpherePosition * start;
                 zipLineStart.transform.position = start.y > end.y
@@ -68,6 +66,12 @@ namespace Prefabs.Rope
                 zipLineEnd.transform.position = start.y > end.y
                     ? endTrigger
                     : startTrigger;
+                
+                zipLineStart.transform.rotation = Quaternion.Euler(
+                    0,
+                    transform.rotation.eulerAngles.y,
+                    0
+                );
             }
             else
             {

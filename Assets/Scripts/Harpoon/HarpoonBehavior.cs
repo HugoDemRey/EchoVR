@@ -110,7 +110,6 @@ namespace Prefabs.Harpoon
             }
             
             _targetType = nextTargetType;
-            Debug.Log(nextTargetType);
             
             if (!infiniteAmmo && _stage is Stage.Done)
             {

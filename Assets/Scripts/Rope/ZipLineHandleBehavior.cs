@@ -162,15 +162,18 @@ public class ZipLineHandleBehavior : ClimbInteractable
         
         if (_leftHandInteractor is null && args.interactorObject.handedness == InteractorHandedness.Left)
         {
+            Debug.Log("Left hand grabbed the handle");
             _leftHandInteractor = args.interactorObject;
         }
         else if (_rightHandInteractor is null && args.interactorObject.handedness == InteractorHandedness.Right)
         {
+            Debug.Log("Right hand grabbed the handle");
             _rightHandInteractor = args.interactorObject;
         }
         
         if (_leftHandInteractor is not null && _rightHandInteractor is not null)
         {
+            Debug.Log("Zip line started");
             AttachPlayer();
         }
     }

@@ -44,13 +44,23 @@ namespace Prefabs.Rope
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             Debug.Log("OnSelectEntered in ZipLineBehavior");
-
-            Transform pos = transform; // Save the transform to pass it to the climbable ZipLineHandleBehavior
-            Destroy(this);
+            
             Destroy(args.interactableObject.transform.gameObject); // Destroy the GrabbableZipLineHandle to replace it
-            ZipLineHandleBehavior handle = Instantiate(handlePrefab); // Replace by a climbable ZipLineHandleBehavior
-            handle.transform.parent = transform.parent; // Needed for placement & rotation
-            handle.ForceUpdate(rope, pos); // Update position
+            GetComponent<MeshRenderer>().enabled = false; // Hide handle preview
+            enabled = false; // Disable the socket
+            
+            // Replace by a climbable ZipLineHandleBehavior, which has the Rope as parent
+            ZipLineHandleBehavior handle = Instantiate(handlePrefab, transform.parent.parent, true);
+            handle.ForceUpdate(rope, transform.parent); // Update position based on the ZipLineStart transform
+        }
+
+        /// <summary>
+        /// Reactivates the zip line socket by enabling its functionality and making the handle preview visible.
+        /// </summary>
+        public void Reactivate()
+        {
+            GetComponent<MeshRenderer>().enabled = true; // Show handle preview
+            enabled = true; // Enable the socket
         }
     }
 }
