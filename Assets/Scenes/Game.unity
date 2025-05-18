@@ -6905,7 +6905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &173686153
 Light:
   m_ObjectHideFlags: 0
@@ -7288,7 +7288,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1240906427}
-  m_LocalEulerAnglesHint: {x: 297.5, y: 352.56, z: -124.747}
+  m_LocalEulerAnglesHint: {x: 158.657, y: 431.30798, z: -181.532}
 --- !u!114 &183984567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11257,7 +11257,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4986a9e137ef1e944aaf3b9cf0072622, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 4986a9e137ef1e944aaf3b9cf0072622, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -47571,7 +47571,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3ad1f755d04be5a4cafd85a1d6b34e57, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3ad1f755d04be5a4cafd85a1d6b34e57, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.286
@@ -48636,7 +48636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1524856082
 Light:
   m_ObjectHideFlags: 0
@@ -53901,7 +53901,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7adea69c09f9fc145bb4b57b97b7ccc9, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 7adea69c09f9fc145bb4b57b97b7ccc9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.375
