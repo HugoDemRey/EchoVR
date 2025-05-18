@@ -20,6 +20,7 @@ namespace Prefabs.Harpoon
         
         public Sprite validCrosshairSprite;
         public Sprite invalidCrosshairSprite;
+        public Sprite noAmmoSprite;
         
         public String ropeStartTag;
         public String ropeEndTag;
@@ -39,8 +40,7 @@ namespace Prefabs.Harpoon
         private GameObject _crosshair;
         private Camera _mainCamera;
         private LineRenderer _ropePreviewLineRenderer;
-        
-        private static readonly Vector3 CrosshairScale = new(0.005f, 0.005f, 0.005f);
+        private Vector3 _crosshairScale = new(0.005f, 0.005f, 0.005f);
 
         private enum Stage
         {
@@ -62,7 +62,7 @@ namespace Prefabs.Harpoon
             _crosshair = new GameObject("CrossSprite");
             _renderer = _crosshair.AddComponent<SpriteRenderer>();
             _renderer.sortingOrder = 10; // Gives priority
-            _crosshair.transform.localScale = CrosshairScale;
+            _crosshair.transform.localScale = _crosshairScale;
             _mainCamera = Camera.main;
             _ropePreviewLineRenderer = gameObject.AddComponent<LineRenderer>();
             _ropePreviewLineRenderer.startWidth = 0.01f;
@@ -86,12 +86,12 @@ namespace Prefabs.Harpoon
             {
                 nextTargetType = IsValidTarget(hit.collider, _stage) ? TargetType.Valid : TargetType.Invalid;
                 
-                _crosshair.transform.position = hit.point + hit.normal * 0.01f;
+                _crosshair.transform.position = Vector3.Lerp(harpoonTip.transform.position, hit.point + hit.normal * 0.01f, .95f);
                 _crosshair.transform.LookAt(_mainCamera.transform);
                 _crosshair.transform.Rotate(0, 180, 0);
                 
                 // scale the crosshair to make it visible
-                _crosshair.transform.localScale = CrosshairScale * (1 + Vector3.Distance(_mainCamera.transform.position, hit.point) / 2f);
+                _crosshair.transform.localScale = _crosshairScale * (1 + Vector3.Distance(_mainCamera.transform.position, hit.point) / 2f);
                 
                 if (_stage == Stage.StartPlaced)
                 {
@@ -110,22 +110,23 @@ namespace Prefabs.Harpoon
             }
             
             _targetType = nextTargetType;
+            Debug.Log(nextTargetType);
             
-            switch (_targetType)
+            if (!infiniteAmmo && _stage is Stage.Done)
             {
-                case TargetType.Valid:
-                    _renderer.sprite = validCrosshairSprite;
-                    break; 
-                case TargetType.Invalid:
-                    _renderer.sprite = invalidCrosshairSprite;
-                    break;
-                case TargetType.None:
-                default:
-                    _crosshair.SetActive(false);
-                    return;
+                _crosshairScale = new Vector3(0.025f, 0.025f, 0.025f);
+                _renderer.sprite = noAmmoSprite;
+            } else
+            {
+                _crosshairScale = new Vector3(0.005f, 0.005f, 0.005f);
+                _renderer.sprite = _targetType switch
+                {
+                    TargetType.Valid => validCrosshairSprite,
+                    _ => invalidCrosshairSprite
+                };
             }
             
-            _crosshair.SetActive(true);
+            _crosshair.SetActive(_targetType is not TargetType.None);
         }
         
         public void Reload()
