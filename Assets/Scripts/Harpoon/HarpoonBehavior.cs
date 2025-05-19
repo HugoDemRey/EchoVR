@@ -252,7 +252,13 @@ namespace Prefabs.Harpoon
 
         private void PlaySound(AudioClip clip, Vector3 position, float volume = 1f)
         {
-            //AudioSource.PlayClipAtPoint(clip, position, volume);
+            if (clip == null)
+            {
+                Debug.LogWarning("Audio clip is null");
+                return;
+            }
+            
+            AudioSource.PlayClipAtPoint(clip, position, volume);
         }
 
         private void HapticFeedback(float duration, float amplitude)
