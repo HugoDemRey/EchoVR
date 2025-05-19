@@ -91,8 +91,11 @@ namespace Prefabs
         /// <param name="args">Ignored</param>
         protected void OnGrab(SelectEnterEventArgs args)
         {
-            Debug.Log("Harpoon's OnGrab called");
-            isHeld = true;
+            if (args.interactorObject is not XRSocketInteractor)
+            {
+                Debug.Log(transform.name + " OnGrab called by " + args.interactorObject.transform.name);
+                isHeld = true;
+            }
         }
 
         /// <summary>
@@ -101,8 +104,11 @@ namespace Prefabs
         /// <param name="args">Ignored</param>
         private void OnRelease(SelectExitEventArgs args)
         {
-            Debug.Log("Harpoon's OnRelease called");
-            isHeld = false;
+            if (args.interactorObject is not XRSocketInteractor)
+            {
+                Debug.Log(transform.name + " OnRelease called by " + args.interactorObject.transform.name);
+                isHeld = false;
+            }
         }
     }
 }
