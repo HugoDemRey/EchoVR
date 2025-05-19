@@ -49,8 +49,7 @@ namespace Prefabs.Rope
             GetComponent<MeshRenderer>().enabled = false; // Hide handle preview
             enabled = false; // Disable the socket
             
-            // Replace by a climbable ZipLineHandleBehavior, which has the Rope as parent
-            ZipLineHandleBehavior handle = Instantiate(handlePrefab, transform.parent.parent, true);
+            ZipLineHandleBehavior handle = Instantiate(handlePrefab, transform.parent.parent, true); // Replace by a climbable ZipLineHandleBehavior
             handle.ForceUpdate(rope, transform.parent); // Update position based on the ZipLineStart transform
         }
 
