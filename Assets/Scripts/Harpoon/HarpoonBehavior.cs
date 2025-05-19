@@ -15,6 +15,8 @@ namespace Prefabs.Harpoon
         public GameObject ropePrefab;
         public bool infiniteAmmo = true;
         public ArrowSocket arrowSocket;
+
+        public GameObject hitParticlesPrefab;
         
         public Material triggerMaterial;
         
@@ -224,12 +226,14 @@ namespace Prefabs.Harpoon
 
         private void PlayStartPlacedFeedback()
         {
+            Instantiate(hitParticlesPrefab, _crosshair.transform);
             PlaySound(startPlacedSound, transform.position, .5f);
             HapticFeedback(.1f, .5f);
         }
         
         private void PlayRopePlacedFeedback()
         {
+            Instantiate(hitParticlesPrefab, _crosshair.transform);
             PlaySound(ropePlacedSound, transform.position, .5f);
             HapticFeedback(.5f, .75f);
         }
