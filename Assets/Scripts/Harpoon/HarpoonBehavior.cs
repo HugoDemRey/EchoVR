@@ -35,6 +35,11 @@ namespace Prefabs.Harpoon
         /// Arrow socket component of the harpoon used for managing the interaction with arrows.
         /// </summary>
         public ArrowSocket arrowSocket;
+        
+        /// <summary>
+        /// Reference to the preview GameObject indicating where arrows should be placed.
+        /// </summary>
+        public GameObject arrowPreview;
 
         /// <summary>
         /// Reference to the particle effect prefab that is instantiated when a successful hit occurs with the harpoon.
@@ -268,12 +273,13 @@ namespace Prefabs.Harpoon
 
         /// <summary>
         /// Resets the harpoon's state to its initial configuration. This method disables
-        /// the rope preview line renderer, and updates the stage.
+        /// the rope preview line renderer and arrow preview, and updates the stage.
         /// </summary>
         public void Reload()
         {
             _stage = Stage.None;
             _ropePreviewLineRenderer.enabled = false;
+            arrowPreview.SetActive(false);
         }
 
         /// <summary>
@@ -384,6 +390,7 @@ namespace Prefabs.Harpoon
                     Debug.Log("End placed");
                     PlaceRope();
                     arrowSocket.DestroyArrow();
+                    arrowPreview.SetActive(true);
                     break;
                 case Stage.Done:
                 default:

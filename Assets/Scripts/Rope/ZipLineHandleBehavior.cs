@@ -1,6 +1,7 @@
 using System;
 using Prefabs.Rope;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
@@ -124,9 +125,12 @@ public class ZipLineHandleBehavior : ClimbInteractable
         {
             Vector3 relativePosition = newPosition - transform.position;
             _characterController.Move(relativePosition);
+            HapticFeedback(.1f, .75f);
         }
 
         transform.position = newPosition;
+
+        
 
         return currentTime - _animationStartTime >= _animationDuration;
     }
@@ -251,5 +255,27 @@ public class ZipLineHandleBehavior : ClimbInteractable
         _attached = false;
         climbProvider.enabled = true; // Re-enable climbing
         _characterController.excludeLayers = 0; // Reset collisions
+    }
+
+    /// <summary>
+    /// Provides haptic feedback to the user's XR controllers through both hand devices.
+    /// This method checks if haptic feedback is supported on each device, and if so, sends an impulse
+    /// to deliver feedback with specified duration and amplitude.
+    /// </summary>
+    /// <param name="duration">The length of time the haptic feedback should be applied, in seconds.</param>
+    /// <param name="amplitude">The strength of the haptic feedback, ranging from 0 (no feedback) to 1 (maximum intensity).</param>
+    private void HapticFeedback(float duration, float amplitude)
+    {
+        InputDevice leftHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+        InputDevice rightHandDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
+        if (leftHandDevice.TryGetHapticCapabilities(out var leftHapticCapabilities) && leftHapticCapabilities.supportsImpulse)
+        {
+            leftHandDevice.SendHapticImpulse(0, amplitude, duration);
+        }
+        if (rightHandDevice.TryGetHapticCapabilities(out var rightHapticCapabilities) && rightHapticCapabilities.supportsImpulse)
+        {
+            rightHandDevice.SendHapticImpulse(0, amplitude, duration);
+        }
     }
 }

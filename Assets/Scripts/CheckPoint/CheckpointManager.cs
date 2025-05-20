@@ -1,4 +1,5 @@
 using System.Collections;
+using Prefabs.Rope;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,6 +31,17 @@ public class CheckpointManager : MonoBehaviour
         {
             climbingMomentumManager.Adjust(spawnPoint.eulerAngles.y); // Adjust the climbing momentum manager's angle
             StartCoroutine(SmoothTeleportation(player, spawnPoint)); // Start the coroutine to handle the teleportation
+
+            // Find the ziplines if any, and reactivate them
+            var ziplines = FindObjectsByType<ZipLineBehavior>(FindObjectsSortMode.None);
+            Debug.Log(ziplines);
+            if (ziplines != null) 
+            {
+                foreach (ZipLineBehavior zip in ziplines)
+                {
+                    zip.Reactivate();
+                }
+            }
         }
     }
 
