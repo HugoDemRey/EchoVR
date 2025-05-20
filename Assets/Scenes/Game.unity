@@ -9495,7 +9495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4971051822225322, guid: dea7a055807108c47a2a811d705869c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -133.69
+      value: -133.17
       objectReference: {fileID: 0}
     - target: {fileID: 4971051822225322, guid: dea7a055807108c47a2a811d705869c4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13753,31 +13753,31 @@ PrefabInstance:
       objectReference: {fileID: 3870290629808597529, guid: cc3984181cb70ac48a5b63a6246cb20c, type: 3}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.672001
+      value: -12.533
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 19.716
+      value: 19.677
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.6419983
+      value: -1.702
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.4784266
+      value: 0.5088903
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.41156358
+      value: -0.44099894
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.5585512
+      value: 0.53094447
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.53827876
+      value: 0.5144402
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13785,11 +13785,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 67.81
+      value: 61.404
       objectReference: {fileID: 0}
     - target: {fileID: 6808127631615461346, guid: 68e8cac4f4f21c64fa42dcdb35e4545a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 34.076
+      value: 34.077
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -67704,11 +67704,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4971051822225322, guid: dea7a055807108c47a2a811d705869c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 19.95
+      value: 19.01
       objectReference: {fileID: 0}
     - target: {fileID: 4971051822225322, guid: dea7a055807108c47a2a811d705869c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 184.61
+      value: 183.8
       objectReference: {fileID: 0}
     - target: {fileID: 4971051822225322, guid: dea7a055807108c47a2a811d705869c4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -92683,8 +92683,8 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Remember these objects !
 
-        Take some time to cook a steak on
-        the fire and play the guitar.
+        Take some time to cook this steak
+        on the fire and eat it, and play the guitar.
 
         Worth it for sure !'
       objectReference: {fileID: 0}
@@ -113967,7 +113967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6045143303391040529, guid: 6217a840ef7b5da40bc3c9075de53ea4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -16.624
+      value: -16.741
       objectReference: {fileID: 0}
     - target: {fileID: 6045143303391040529, guid: 6217a840ef7b5da40bc3c9075de53ea4, type: 3}
       propertyPath: m_LocalPosition.z

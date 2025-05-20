@@ -13,7 +13,7 @@ public class EatSteak : MonoBehaviour
     {
         if (eatSound == null)
         {
-            Debug.LogError("Eat Sound not assigned!");
+            Debug.Log("Eat Sound not assigned!");
         }
 
         if (playerCamera == null)
@@ -27,6 +27,7 @@ public class EatSteak : MonoBehaviour
         if (!isSteakEaten && Vector3.Distance(transform.position, playerCamera.position) <= detectionDistance)
         {
             Eat();
+
         }
     }
 
@@ -40,6 +41,7 @@ public class EatSteak : MonoBehaviour
     {
         eatSound.Play();
         yield return new WaitForSeconds(eatSound.clip.length);
-        gameObject.SetActive(false);
+        gameObject.SetActive(false);        
+
     }
 }
