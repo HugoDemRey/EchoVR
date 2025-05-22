@@ -9,8 +9,8 @@ using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
 public class ClimbHandSnapping : MonoBehaviour
 {
 
-    private Transform rightController;
-    private Transform leftController;
+    public Transform rightController;
+    public Transform leftController;
     private Component rightControllerModel;
     private Component leftControllerModel;
 
@@ -25,8 +25,9 @@ public class ClimbHandSnapping : MonoBehaviour
     private string SNAPPING_POINT_TAG = "SnappingPoint";
     private static string CONTROLLER_MODEL_TAG = "ControllerModel";
 
-    void Awake()
+    void Start()
     {
+
         InitializeInputDevices();
 
         climbInteractable = GetComponent<ClimbInteractable>();
@@ -165,8 +166,8 @@ public class ClimbHandSnapping : MonoBehaviour
 
     private void InitializeInputDevices()
     {
-        rightController = GameObject.FindGameObjectWithTag("RightController").transform;
-        leftController = GameObject.FindGameObjectWithTag("LeftController").transform;
+        // rightController = GameObject.FindGameObjectWithTag("RightController").transform;
+        // leftController = GameObject.FindGameObjectWithTag("LeftController").transform;
 
         Debug.Log("Right Controller: " + rightController);
         Debug.Log("Left Controller: " + leftController);
