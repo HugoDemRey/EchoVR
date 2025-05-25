@@ -1,6 +1,10 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// Manages tutorial checkpoints in the game.
+/// Their behavior is different from regular checkpoints, as they teleport the player on collision.
+/// </summary>
 public class MarkTutorialCheckpoint : MonoBehaviour
 {
     public CheckpointState checkpointState;

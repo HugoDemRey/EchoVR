@@ -3,14 +3,49 @@ using System.Collections;
 
 public class CookingManager : MonoBehaviour
 {
-    public GameObject rawSteak;       
-    public GameObject cookedSteak;     
-    public GameObject pan;             
-    public GameObject fireCamp;        
-    public AudioSource cookingSound;  
+    /// <summary>
+    /// Raw steak that can be placed in the pan for cooking.
+    /// </summary>
+    public GameObject rawSteak;
+
+    /// <summary>
+    /// Cooked steak.
+    /// </summary>
+    public GameObject cookedSteak;
+
+    /// <summary>
+    /// Frying pan used for cooking in the scene.
+    /// </summary>
+    public GameObject pan;
+
+    /// <summary>
+    /// Fire camp GameObject that is utilized to provide heat for cooking.
+    /// </summary>
+    public GameObject fireCamp;
+
+    /// <summary>
+    /// AudioSource component used to play the sound associated with the cooking process.
+    /// </summary>
+    public AudioSource cookingSound;
+
+    /// <summary>
+    /// Parent Transform used to organize steak-related objects within the scene.
+    /// </summary>
     public Transform steakParent;
-    public ParticleSystem smokeEffect;  
+
+    /// <summary>
+    ///Particle system used to simulate smoke effects during the cooking process.
+    /// </summary>
+    public ParticleSystem smokeEffect;
+
+    /// <summary>
+    /// Indicates whether the steak is currently placed in the pan.
+    /// </summary>
     public bool isSteakInPan = false;
+
+    /// <summary>
+    /// Indicates whether the pan is positioned near the fire source.
+    /// </summary>
     public bool panNearFire = false;
 
     private bool isCooking = false;    
@@ -31,6 +66,15 @@ public class CookingManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initiates the cooking process if the necessary conditions are met.
+    /// Activates audio feedback and begins the cooking coroutine.
+    /// </summary>
+    /// <remarks>
+    /// This method assumes that the 'rawSteak' is active, the steak is placed in the pan,
+    /// and the pan is near the fire. It checks if cooking is not already in progress,
+    /// then starts the cooking process.
+    /// </remarks>
     public void StartCooking()
     {
         if (!isCooking)
@@ -68,12 +112,4 @@ public class CookingManager : MonoBehaviour
         cookingSound.Stop();
 
     }
-
-    // public void PlaceSteakInPan()
-    // {
-    //     rawSteak.SetActive(true);  
-    //     cookedSteak.SetActive(false);  
-    //     rawSteak.transform.position = steakParent.position; 
-    //     rawSteak.transform.rotation = steakParent.rotation; 
-    // }
 }

@@ -1,6 +1,9 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// Updates the checkpoint visuals and state on collision.
+/// </summary>
 public class MarkCheckpoint : MonoBehaviour
 {
     public CheckpointState checkpointState;

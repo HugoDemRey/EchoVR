@@ -12,12 +12,30 @@ using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
 
 public class ClimbingMomentumManager : MonoBehaviour
 {
-    public CharacterController characterController; // To manipulate the position of the player
-    public CustomSnapTurnProvider snapTurnProvider; // To manipulate the rotation of the player
+    /// <summary>
+    /// Used to manipulate the position of the player.
+    /// </summary>
+    public CharacterController characterController;
 
-    public CustomContinuousTurnProvider continuousTurnProvider; // To manipulate the rotation of the player
-    public InputActionProperty rightControllerVelocityAction; // Link this to XRI Right/Velocity
-    public InputActionProperty leftControllerVelocityAction; // Link this to XRI Left/Velocity
+    /// <summary>
+    /// Used to manipulate the rotation of the player
+    /// </summary>
+    public CustomSnapTurnProvider snapTurnProvider; 
+
+    /// <summary>
+    /// Used to manipulate the rotation of the player
+    /// </summary>
+    public CustomContinuousTurnProvider continuousTurnProvider;
+
+    /// <summary>
+    /// Link this to XRI Right/Velocity
+    /// </summary>
+    public InputActionProperty rightControllerVelocityAction;
+
+    /// <summary>
+    /// Link this to XRI Left/Velocity
+    /// </summary>
+    public InputActionProperty leftControllerVelocityAction;
     
     private float angleOffset = 0f; // Offset to apply to the rotation
     private ClimbProvider climbProvider;
@@ -41,11 +59,18 @@ public class ClimbingMomentumManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Adjusts the angle offset used for player rotation, accounting for rotations.
+    /// </summary>
+    /// <param name="newAngle">The new angle value used to set the rotation offset.</param>
     public void Adjust(float newAngle)
     {
         angleOffset = newAngle;
     }
 
+    /// <summary>
+    /// Handles logic for disabling the climbing momentum manager.
+    /// </summary>
     void OnDisable()
     {
         if (snapTurnProvider != null)
@@ -55,6 +80,10 @@ public class ClimbingMomentumManager : MonoBehaviour
             continuousTurnProvider.onContinuousTurn -= HandleTurn;
     }
 
+    /// <summary>
+    /// Handles turn adjustments for the player by modifying the internal angle offset.
+    /// </summary>
+    /// <param name="angle">The angle value to adjust the current rotational offset.</param>
     private void HandleTurn(float angle)
     {
         angleOffset = (angleOffset + angle) % 360;
@@ -89,6 +118,12 @@ public class ClimbingMomentumManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Applies momentum to the character using the specified velocity and gradually reduces
+    /// the velocity over time based on a decay rate until a minimum threshold is reached.
+    /// </summary>
+    /// <param name="velocity">The initial velocity vector to be applied as momentum.</param>
+    /// <returns>Returns an enumerator to be used for coroutine execution.</returns>
     private System.Collections.IEnumerator ApplyMomentum(Vector3 velocity) {
 
         while (velocity.magnitude > MIN_VELOCITY_THRESHOLD)
@@ -100,6 +135,9 @@ public class ClimbingMomentumManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Handles the logic to execute when the climbing action is finished.
+    /// </summary>
     void OnClimbFinished()
     {
 
@@ -111,9 +149,7 @@ public class ClimbingMomentumManager : MonoBehaviour
             if (momentumDuration > 0) StartCoroutine(StopMomentumAfterDelay(momentumCoroutine, momentumDuration)); // Stop after the specified duration
             return;
         }
-
-
-        // Your logic here
+        
         Vector3 rightVelocity = rightControllerVelocityAction.action.ReadValue<Vector3>();
         Vector3 leftVelocity = leftControllerVelocityAction.action.ReadValue<Vector3>();
 
@@ -128,9 +164,14 @@ public class ClimbingMomentumManager : MonoBehaviour
 
 
     }
-
-        // Add this helper coroutine
-    private System.Collections.IEnumerator StopMomentumAfterDelay(Coroutine momentumCoroutine, float delayInSeconds)
+    
+        /// <summary>
+        /// Stops the momentum effect after a specified delay by halting the associated coroutine.
+        /// </summary>
+        /// <param name="momentumCoroutine">The coroutine controlling the momentum effect that needs to be stopped.</param>
+        /// <param name="delayInSeconds">The time in seconds to wait before stopping the momentum effect.</param>
+        /// <returns>An enumerator used for coroutine execution.</returns>
+        private System.Collections.IEnumerator StopMomentumAfterDelay(Coroutine momentumCoroutine, float delayInSeconds)
     {
         yield return new WaitForSeconds(delayInSeconds); // Wait for 200ms
         StopCoroutine(momentumCoroutine); // Stop the ApplyMomentum coroutine

@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
 
+/// <summary>
+/// SnapListener provides functionality related to handling and reacting to snap events within the Unity environment.
+/// </summary>
 public class SnapListener : MonoBehaviour
 {
 
@@ -18,6 +21,10 @@ public class SnapListener : MonoBehaviour
             snapTurnProvider.onSnapTurn -= HandleSnapTurn;
     }
 
+    /// <summary>
+    /// Handles the event triggered by a snap turn. Logs the angle of the snap turn to the console.
+    /// </summary>
+    /// <param name="angle">The angle in degrees by which the snap turn has been executed.</param>
     private void HandleSnapTurn(float angle)
     {
         Debug.Log($"Snap Turned {angle} degrees");

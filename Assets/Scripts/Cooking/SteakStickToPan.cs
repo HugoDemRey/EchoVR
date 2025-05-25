@@ -3,10 +3,22 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class SteakStickToPan : MonoBehaviour
 {
-
+    /// <summary>
+    /// Transform position and rotation where the steak
+    /// will be placed when properly aligned within the pan.
+    /// </summary>
     private Transform steakPlacement;
+
+    /// <summary>
+    /// Stores the initial parent Transform of the steak object.
+    /// </summary>
     private Transform initialParent;
 
+    /// <summary>
+    /// Reference to the CookingManager instance used to manage the cooking process
+    /// within the scene, including steak placement, cooking states, and interactions
+    /// between the pan and the required cooking objects (e.g., fire camp).
+    /// </summary>
     private CookingManager cookingManager;
 
     private void Start()

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PanNearFireDetector : MonoBehaviour
 {
+    /// <summary>
+    /// Reference to the CookingManager instance managing the cooking process within the scene.
+    /// </summary>
     public CookingManager cookingManager; 
 
     void OnTriggerEnter(Collider other)

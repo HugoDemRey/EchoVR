@@ -2,10 +2,19 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Manages teleportation of players to predefined tutorial spawn points, ensuring smooth transitions with additional effects.
+/// </summary>
 public class TutorialCheckpointManager : MonoBehaviour
 {
     public GameObject canvas;
     public ClimbingMomentumManager climbingMomentumManager;
+
+    /// <summary>
+    /// Teleports the player to a specified spawn point and initiates smooth teleportation effects such as fade-in and fade-out.
+    /// </summary>
+    /// <param name="player">The transform of the player to be teleported.</param>
+    /// <param name="spawnPoint">The target transform representing the spawn point for the player.</param>
     public void teleportPlayer(Transform player, Transform spawnPoint)
     {
         if (spawnPoint != null)
@@ -21,6 +30,12 @@ public class TutorialCheckpointManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Handles the smooth teleportation of the player to a specified spawn point with fade-in and fade-out effects.
+    /// </summary>
+    /// <param name="player">The transform of the player to be teleported.</param>
+    /// <param name="spawnPoint">The target transform representing the spawn point for the player.</param>
+    /// <returns>Returns an IEnumerator for use in a coroutine.</returns>
     private IEnumerator SmoothTeleporation(Transform player, Transform spawnPoint)
     {
         // Wait a few seconds before teleporting

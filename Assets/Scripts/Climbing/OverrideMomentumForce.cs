@@ -16,6 +16,9 @@ public class OverrideMomentumForce : MonoBehaviour
     {
     }
 
+    /// <summary>
+    /// Draws visual debugging aids in the scene view to represent the force direction and magnitude.
+    /// </summary>
     private void OnDrawGizmos()
     {
         if (forceDirection == Vector3.zero || forceMagnitude == 0f)

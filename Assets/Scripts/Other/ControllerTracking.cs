@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Represents the tracking data for a controller, including its position and rotation relative to its original state.
+/// Provides functionality to store and manage the original relative position, rotation, and the closest hand pose.
+/// </summary>
 public class ControllerTracking
 {
     public Vector3 originalRelativePosition { get; set; }

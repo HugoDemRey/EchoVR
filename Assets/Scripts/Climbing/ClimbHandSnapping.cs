@@ -6,21 +6,57 @@ using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing;
+
+/// <summary>
+/// Handles the snapping of hand controllers to predefined positions and rotations
+/// during climbing interactions.
+/// </summary>
 public class ClimbHandSnapping : MonoBehaviour
 {
-
+    /// <summary>
+    /// Transform of the right controller.
+    /// </summary>
     public Transform rightController;
+
+    /// <summary>
+    /// Transform of the left controller.
+    /// </summary>
     public Transform leftController;
+
+    /// <summary>
+    /// Model of the right controller to be visually adjusted during climbing interactions.
+    /// </summary>
     private Component rightControllerModel;
+
+    /// <summary>
+    /// Model of the left controller to be visually adjusted during climbing interactions.
+    /// </summary>
     private Component leftControllerModel;
 
+    /// <summary>
+    /// Used to track the model's position relative to its original position.
+    /// </summary>
     private ControllerTracking rightControllerTracking;
+
+    /// <summary>
+    /// Used to track the model's position relative to its original position.
+    /// </summary>
     private ControllerTracking leftControllerTracking;
 
-    public float snapSpeed = 8f; // TODO - Implement smooth transition
+    /// <summary>
+    /// Speed (in frames) at which the controller's position and rotation snap towards the target hand pose during alignment.
+    /// </summary>
+    public float snapSpeed = 8f;
 
+    /// <summary>
+    /// The object to snap to.
+    /// </summary>
     private ClimbInteractable climbInteractable;
-    private List<Transform> SnappingPoints; // List of predefined hand poses, every children with tag "SnappingPoint" is added to this list
+    
+    /// <summary>
+    /// List of predefined hand poses, every children with tag "SnappingPoint" is added to this list
+    /// </summary>
+    private List<Transform> SnappingPoints;
 
     private string SNAPPING_POINT_TAG = "SnappingPoint";
     private static string CONTROLLER_MODEL_TAG = "ControllerModel";
@@ -41,13 +77,6 @@ public class ClimbHandSnapping : MonoBehaviour
                 Debug.Log("Snapping Point: " + child.name);
             }
         }
-
-        Debug.Log("Snapping Points: " + SnappingPoints.Count);
-        // foreach (Transform child in transform.parent)
-        // {
-        //     if (child.CompareTag(SNAPPING_POINT_TAG)) SnappingPoints.Add(child);
-        // }
-
 
         if (climbInteractable == null)
         {
@@ -72,6 +101,10 @@ public class ClimbHandSnapping : MonoBehaviour
         climbInteractable.selectExited.AddListener(ResetHandModel);
     }
 
+    /// <summary>
+    /// Triggers the alignment of the hand model of the interactor object to the closest predefined snapping point.
+    /// </summary>
+    /// <param name="args">Event arguments that provide context about the select enter interaction.</param>
     void AlignHandModel(SelectEnterEventArgs args)
     {
         if (args.interactorObject == null)
@@ -101,6 +134,11 @@ public class ClimbHandSnapping : MonoBehaviour
         StartCoroutine(Align(triggeredComponent, controllerTracking));
     }
 
+    /// <summary>
+    /// Retrieves the closest predefined snapping point to the given hand position.
+    /// </summary>
+    /// <param name="handPosition">The current position of the hand for which the closest snapping point is being calculated.</param>
+    /// <returns>The Transform representing the closest predefined snapping point.</returns>
     private Transform GetClosestHandPose(Vector3 handPosition)
     {
         Transform closestPose = SnappingPoints[0];
@@ -119,6 +157,12 @@ public class ClimbHandSnapping : MonoBehaviour
         return closestPose;
     }
 
+    /// <summary>
+    /// Smoothly aligns the controller's position and rotation to the closest predefined hand pose while snapping is active.
+    /// </summary>
+    /// <param name="controller">The visual representation of the controller to be aligned.</param>
+    /// <param name="controllerTracking">The tracking information associated with the controller.</param>
+    /// <returns>Returns an enumerator to handle the coroutine for continuous alignment of the controller to the target pose.</returns>
     private System.Collections.IEnumerator Align(Component controller, ControllerTracking controllerTracking)
     {
         controllerTracking.isTriggered = true;
@@ -144,6 +188,10 @@ public class ClimbHandSnapping : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Resets the hand model of the interactor object to its original position and rotation relative to the controller.
+    /// </summary>
+    /// <param name="args">Event arguments that provide context about the select exit interaction.</param>
     void ResetHandModel(SelectExitEventArgs args)
     {
         Component triggeredComponent;
@@ -164,20 +212,14 @@ public class ClimbHandSnapping : MonoBehaviour
         triggeredComponent.transform.localRotation = controllerTracking.originalRelativeRotation;
     }
 
+    /// <summary>
+    /// Initializes the input devices by assigning the controller models for both right
+    /// and left controllers based on their tagged child components.
+    /// </summary>
     private void InitializeInputDevices()
     {
-        // rightController = GameObject.FindGameObjectWithTag("RightController").transform;
-        // leftController = GameObject.FindGameObjectWithTag("LeftController").transform;
-
-        Debug.Log("Right Controller: " + rightController);
-        Debug.Log("Left Controller: " + leftController);
-
         rightControllerModel = rightController.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.CompareTag(CONTROLLER_MODEL_TAG));
         leftControllerModel = leftController.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.CompareTag(CONTROLLER_MODEL_TAG));
-
-        Debug.Log("Right Controller Model: " + rightControllerModel);
-        Debug.Log("Left Controller Model: " + leftControllerModel);
-
     }
 
 }

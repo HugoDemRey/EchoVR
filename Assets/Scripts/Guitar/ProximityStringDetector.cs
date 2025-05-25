@@ -1,22 +1,37 @@
 using UnityEngine;
 
+/// <summary>
+/// Detects proximity of the right-hand transform to the strings area defined by a BoxCollider.
+/// </summary>
 public class ProximityStringDetector : MonoBehaviour
 {
+    /// <summary>
+    /// A reference to the Transform component representing the right hand.
+    /// </summary>
     public Transform rightHandTransform;
+
+    /// <summary>
+    /// BoxCollider defining the area where proximity detection occurs with the right-hand transform.
+    /// </summary>
     public BoxCollider stringsAreaCollider;
-    [Tooltip("Facteur pour agrandir la zone de détection autour du BoxCollider")]
+    [Tooltip("Facteur pour agrandir la zone de dï¿½tection autour du BoxCollider")]
     public Vector3 detectionScaleMultiplier = new Vector3(1.5f, 1.5f, 1.5f);
 
     private GuitarSoundController guitarSoundController;
     private bool isHandInside = false;
-
+    
     void Start()
     {
         guitarSoundController = GetComponent<GuitarSoundController>();
         if (guitarSoundController == null)
-            Debug.LogError("GuitarSoundController non trouvé !");
+            Debug.LogError("GuitarSoundController non trouvï¿½ !");
     }
 
+    /// <summary>
+    /// Called every frame to detect whether the right-hand transform is inside the proximity
+    /// area defined by the `stringsAreaCollider`. If the hand enters or exits the area, the
+    /// method triggers actions in the `GuitarSoundController` to handle the state change.
+    /// </summary>
     void Update()
     {
         if (rightHandTransform == null || stringsAreaCollider == null)
@@ -40,7 +55,7 @@ public class ProximityStringDetector : MonoBehaviour
         {
             isHandInside = true;
             guitarSoundController.OnHandTouch(true);
-            Debug.Log("Main entrée dans la zone des cordes (agrandie)");
+            Debug.Log("Main entrï¿½e dans la zone des cordes (agrandie)");
         }
         else if (!inside && isHandInside)
         {
