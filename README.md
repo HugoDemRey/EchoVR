@@ -57,6 +57,7 @@ These were **used as-is from external sources**.
 **Unity Packages**
 
 - [AA Medieval Low-Poly Environments](https://assetstore.unity.com/packages/3d/environments/aa-low-poly-medieval-environment-249533)
+- [Low-Poly Simple Medieval Props](https://assetstore.unity.com/packages/3d/props/low-poly-simple-medieval-props-258397)
 - [Acoustic Guitar](https://assetstore.unity.com/packages/3d/props/acoustic-guitar-21037)
 - [Cartoon FX Remaster Free](https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-remaster-free-109565)
 - [Wood Set Pieces](https://assetstore.unity.com/packages/3d/props/wood-set-pieces-33853)
