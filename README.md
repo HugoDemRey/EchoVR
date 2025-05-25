@@ -49,6 +49,8 @@ These were **used as-is from external sources**.
 - All scripts included in the default XR Origin Prefab prefab in the XRIT 3.0.7 Demo Scene - https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@3.0/manual/samples-starter-assets.html#prefabs
 - `ClimbInteractable.cs` from the _XR Interaction Toolkit 3.1.2_
 - `GrabInteractable.cs` from the _XR Interaction Toolkit 3.1.2_
+- `XRSocketInteractor` from the _XR Interaction Toolkit 3.1.2_
+- `XRUIInputModule` from the _XR Interaction Toolkit 3.1.2_ 
 
 ### External Assets
 
