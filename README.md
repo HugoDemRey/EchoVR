@@ -57,6 +57,8 @@ These were **used as-is from external sources**.
 **Unity Packages**
 
 - [AA Medieval Low-Poly Environments](https://assetstore.unity.com/packages/3d/environments/aa-low-poly-medieval-environment-249533)
+- [Meadow Forest Props - Low Poly Models Pack](https://assetstore.unity.com/packages/3d/props/meadow-forest-props-low-poly-models-pack-316242?srsltid=AfmBOooZN9sW9yQUNQ-zY9cR1gK2qqv0cepGchnOkR3wQFIzNuAA-sgS)
+- [Poly Angel - Mini Pirates Island](https://assetstore.unity.com/packages/3d/vehicles/sea/poly-angel-mini-pirates-island-267015)
 - [LowPoly Vegetation Season Pack Lite](https://assetstore.unity.com/packages/3d/environments/landscapes/low-poly-simple-nature-pack-162153)
 - [Low-Poly Simple Medieval Props](https://assetstore.unity.com/packages/3d/props/low-poly-simple-medieval-props-258397)
 - [Acoustic Guitar](https://assetstore.unity.com/packages/3d/props/acoustic-guitar-21037)
